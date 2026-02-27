@@ -132,7 +132,7 @@ button,select{
     min-height:100vh;
   }
 
-  .container{
+  .game-container{
     width:95%;
     max-width:500px;
     margin:0 auto;
@@ -177,7 +177,6 @@ button,select{
     </div>
 
   </div>
-</div>
 
 <script>
 /* ===================== QUOTES ===================== */
@@ -248,7 +247,7 @@ const quotes = [
 '"Thái độ quyết định độ cao của bạn." - Zig Ziglar',
 '"Đừng so sánh mình với người khác, hãy so sánh mình với phiên bản hôm qua." - Khuyết danh',
 '"Học vấn không phải là đích đến, mà là hành trình suốt đời." - Albert Einstein',
-'"Tự do lớn nhất là được là chính mình." - Jim Morrison'
+'"Tự do lớn nhất là được là chính mình." - Jim Morrison',
  `Nhà văn tồn tại ở trên đời trước hết để làm công việc giống như kẻ nâng giấc cho những người cùng đường tuyệt lộ bị cái ác hoặc số phận đen đủi dồn đến chân tường; để bênh vực cho những con người không còn ai bênh vực và để cất lên tiếng nói cho những số phận bị lãng quên. — Nguyễn Minh Châu`,
 
 `Văn học và đời sống là hai vòng tròn đồng tâm mà tâm điểm là con người. Nhà văn nếu đánh mất con người thì cũng đồng thời đánh mất chính lý do tồn tại của văn chương. — Nguyễn Minh Châu`,
@@ -338,7 +337,7 @@ const quotes = [
   `Tôi thấy văn chương của mình (và cả bản thân mình) sao giống trái sầu riêng quá trời, có người thích, khen thơm, có người bưng mũi quay đi vì chê nó nặng mùi. Nhưng khi bắt đầu kết trái, sầu riêng đâu định trước sẽ dâng tặng cho riêng ai, nên chẳng bẻ mình bẻ mẩy để lấy lòng người…” — Nguyễn Ngọc Tư`,
   `Người vẫn còn mang vết thương đã toan đi chữa vết thương cho người khác. Tôi nghĩ nghề viết và người viết cũng đơn giản vậy, chữa lành, an ủi những vết thương của người đời để làm dịu vết thương của chính mình” — Nguyễn Ngọc Tư`,
   `Tình yêu này của người nghệ sĩ vừa là một niềm hân hoan say mê, vừa là một nỗi đau đớn, khắc khoải, một mối quan hoài thường trực về số phận, hạnh phúc của những người chung quanh mình” — Nguyễn Minh Châu`,
-  `“Thơ là mở ra được một cái gì mà trước câu thơ đó, trước nhà thơ đó, vẫn như là bị phong kín” — Nguyễn Tuân`,
+  `"Thơ là mở ra được một cái gì mà trước câu thơ đó, trước nhà thơ đó, vẫn như là bị phong kín” — Nguyễn Tuân`,
   `Thơ ca, nếu không có người tôi đã mồ côi” — Rasul Gamzatov`,
   `Mỗi người viết văn chỉ có khả năng thành công qua những cái mình thông thuộc” — Tô Hoài`,
   `Làm thơ có lúc như lấy người điếc lác ù tai làm bạn tri âm,
@@ -392,8 +391,7 @@ const quotes = [
   `Không phải ai cũng có thể làm những điều vĩ đại. Nhưng chúng ta có thể làm những điều nhỏ nhặt với tình yêu vĩ đại.`,
   `Bàn tay tặng hoa hồng bao giờ cũng phảng phất hương thơm.`,
   `Chúng ta sống trong những việc chúng ta đã làm, không phải trong năm tháng; trong hành động, không phải trong hơi thở; trong cảm xúc, không phải trong những con số trên mặt đồng hồ. Chúng ta đếm thời gian bằng những nhịp tim. Người sống nhiều nhất là người tư duy nhiều nhất, cảm nhận cao thượng nhất và hành động tốt đẹp nhất.`,
-  `Đừng thở dài hãy vươn vai mà sống.
-Bùn dưới chân nhưng nắng ở trên đầu.`,
+  `Đừng thở dài hãy vươn vai mà sống. Bùn dưới chân nhưng nắng ở trên đầu.`,
   `Sống như chính mình trong một thế giới luôn cố biến mình thành người khác – đó là thành tựu lớn nhất trong cuộc đời mỗi người. — Ralph Waldo Emerson`,
   `Kẻ mạnh không phải là kẻ giẫm lên người khác để thỏa mãn lòng ích kỉ. Kẻ mạnh chính là kẻ giúp đỡ người khác trên đôi vai của mình. — Nam Cao`,
   `Cuộc đời cũng như hơi thở vậy thôi. Ta không thể hít một hơi dài quá khả năng của mình. Nhưng ta có thể hít sâu hết khả năng của mình trong từng hơi thở. Nếu đã biết trăm năm là hữu hạn, có gì ta không sống thật sâu? — Phạm Lữ Ân`,
@@ -438,16 +436,16 @@ function randomQuote(){
   let fiveQuotes = getRandomFive(quotes);
 
   // Chọn 1 câu trong 5 câu đó
-  let randomIndex = Math.floor(Math.random()*fiveQuotes.length);
+  let randomIndex = Math.floor(Math.random() * fiveQuotes.length);
 
   currentQuote = fiveQuotes[randomIndex];
 
   quoteEl.innerHTML = currentQuote
     .split("")
-    .map(char=>`<span>${char}</span>`)
+    .map(char => `<span>${char}</span>`)
     .join("");
 
-  inputEl.value="";
+  inputEl.value = "";
 }
 /* ===================== GAME ===================== */
 function formatTime(seconds){
@@ -587,6 +585,7 @@ randomQuote();
 </body>
 
 </html>
+
 
 
 
