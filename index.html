@@ -22,6 +22,7 @@ body{
   font-family:'Poppins',sans-serif;
   background:linear-gradient(135deg,#9ad0c2,#8ec6c5);
   color:var(--text);
+  overflow-x:hidden;
 }
 
 body.dark{
@@ -63,6 +64,15 @@ body.dark{
   min-height:90px;
   line-height:1.6;
   transition:0.3s ease;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+@media (max-width: 480px){
+  .quote{
+    font-size:16px;
+  }
 }
 
 .correct{color:var(--mint);}
@@ -155,9 +165,12 @@ button,select{
 
     <div class="controls">
       <select id="timeSelect">
-        <option value="60">60s</option>
-        <option value="120">120s</option>
-      </select>
+  <option value="600" selected>10 phút</option>
+  <option value="480" selected>480s</option>
+  <option value="200" selected>200s</option>
+  <option value="120">120s</option>
+  <option value="60">60s</option>
+</select>
       <button onclick="toggleDark()">🌙 Dark</button>
     </div>
 
@@ -384,8 +397,8 @@ function startGame(){
   if(started) return;
   started=true;
 
-  timeLeft = 600; // 10 phút mặc định
-  timeEl.textContent = formatTime(timeLeft);
+ timeLeft = parseInt(timeSelect.value);
+ timeEl.textContent = formatTime(timeLeft);
 
   timer=setInterval(()=>{
     timeLeft--;
@@ -459,10 +472,11 @@ totalTyped = normalizedInput.length;
 
 /* ===================== WPM ===================== */
 function calculateWPM(){
-  let minutes=(parseInt(timeSelect.value)-timeLeft)/60;
-  if(minutes>0){
-    let wpm=Math.round((totalTyped/5)/minutes);
-    wpmEl.textContent=wpm;
+  let timeElapsed = (parseInt(timeSelect.value) - timeLeft) / 60;
+
+  if(timeElapsed > 0){
+    let wpm = Math.round((totalTyped / 5) / timeElapsed);
+    wpmEl.textContent = wpm;
   }
 }
 
@@ -513,3 +527,4 @@ randomQuote();
 
 </body>
 </html>
+
