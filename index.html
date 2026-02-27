@@ -163,10 +163,12 @@ button,select{
     </div>
     <p id="message"></p>
 
-    <div class="quote" id="quote"></div>
+    <div id="quote" class="quote-box"></div>
 
-    <textarea id="input" placeholder="Bạn hãy gõ những gì có trên màn hình vào đây..."></textarea>
-
+<textarea
+  id="input"
+  placeholder="Bạn hãy gõ những gì có trên màn hình vào đây..."
+></textarea>
    <div class="controls">
   <button onclick="toggleDark()">🌙 Dark</button>
 </div>
@@ -398,6 +400,7 @@ const quotes = [
   `Hãy nhớ rằng trước khi được thế giới này phát hiện ra, những viên đá quý đã phải vùi trong cát bụi và chịu đựng nỗi cô đơn cả ngàn năm. — Tất Thúy Minh — Bỉ Shumin`,
 ];
 
+  
 /* ===================== ELEMENTS ===================== */
 const boardEl=document.getElementById("board");
 const messageEl=document.getElementById("message");
@@ -585,6 +588,7 @@ randomQuote();
 </body>
 
 </html>
+
 
 
 
