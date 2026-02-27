@@ -18,11 +18,11 @@
 
 body{
   margin:0;
-  font-family:'Poppins',sans-serif;
-  background:linear-gradient(135deg,#9ad0c2,#8ec6c5);
-  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
-
 body.dark{
   --bg:#0f2027;
   --card:#1c2b2d;
@@ -31,16 +31,9 @@ body.dark{
   background:#0f2027;
 }
 
-.main-wrapper{
-  display:flex;
-  justify-content:center;
-  padding:40px;
-}
-
 .game-container{
-  width:86%;
-  max-width:450px;
-  margin:15px auto;
+  width:95%;
+  max-width:420px;
 }
 
 .stats{
@@ -160,8 +153,7 @@ button,select{
 </head>
 
 <body>
-
-<div class="main-wrapper">
+  
   <div class="game-container">
 
     <div class="stats">
@@ -220,7 +212,7 @@ const quotes = [
 '"Một tác phẩm nghệ thuật phải là kết quả của tình yêu." - Lev Tolstoy',
 '"Tác phẩm nghệ thuật sẽ chết nếu nó miêu tả cuộc sống chỉ để miêu tả." - Vissarion Belinsky',
 '"Văn học phản ánh hiện thực nhưng không sao chép hiện thực." - Sóng Hồng',
-'"Thơ trước hết là cuộc đời, sau đó mới là nghệ thuật." - Tố Hữu'
+'"Thơ trước hết là cuộc đời, sau đó mới là nghệ thuật." - Tố Hữu',
 '"Mỗi nhà văn chân chính đều là một nhà nhân đạo từ trong cốt tủy." - Sê-khốp',
 '"Văn học phản ánh hiện thực nhưng không sao chép hiện thực." - Lỗ Tấn',
 '"Nhà văn là người thư ký trung thành của thời đại." - Balzac',
@@ -416,10 +408,9 @@ const inputEl=document.getElementById("input");
 const timeEl=document.getElementById("time");
 const wpmEl=document.getElementById("wpm");
 const scoreEl=document.getElementById("score");
-const boardEl=document.getElementById("board");
 
 let currentQuote="";
-let timeLeft=parseInt(timeSelect.value);
+let timeLeft = 600;
 let timer=null;
 let totalTyped=0;
 let score=0;
@@ -596,6 +587,7 @@ randomQuote();
 </body>
 
 </html>
+
 
 
 
