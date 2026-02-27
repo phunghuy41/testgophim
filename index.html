@@ -121,13 +121,18 @@ button,select{
 @media (max-width:600px){
   .controls{
     flex-direction:column;
-    gap:7px;
+    gap:10px;
   }
 
   .controls select,
   .controls button{
     width:86%;
   }
+}
+  #message{
+  margin-top:10px;
+  font-style:italic;
+  opacity:0.8;
 }
 </style>
 </head>
@@ -142,18 +147,15 @@ button,select{
       🔥 WPM: <span id="wpm">0</span>
       🏆 Score: <span id="score">0</span>
     </div>
+    <p id="message"></p>
 
     <div class="quote" id="quote"></div>
 
-    <textarea id="input" placeholder="Bắt đầu gõ ở đây..."></textarea>
+    <textarea id="input" placeholder="Bạn hãy gõ những gì có trên màn hình vào đây..."></textarea>
 
-    <div class="controls">
-      <select id="timeSelect">
-        <option value="60">60s</option>
-        <option value="120">120s</option>
-      </select>
-      <button onclick="toggleDark()">🌙 Dark</button>
-    </div>
+   <div class="controls">
+  <button onclick="toggleDark()">🌙 Dark</button>
+</div>
 
     <div class="leaderboard">
       <h4>🏅 Top Scores:</h4>
@@ -315,7 +317,38 @@ Bùn dưới chân nhưng nắng ở trên đầu.`,
   `Sống như chính mình trong một thế giới luôn cố biến mình thành người khác – đó là thành tựu lớn nhất trong cuộc đời mỗi người. — Ralph Waldo Emerson`,
   `Kẻ mạnh không phải là kẻ giẫm lên người khác để thỏa mãn lòng ích kỉ. Kẻ mạnh chính là kẻ giúp đỡ người khác trên đôi vai của mình. — Nam Cao`,
   `Cuộc đời cũng như hơi thở vậy thôi. Ta không thể hít một hơi dài quá khả năng của mình. Nhưng ta có thể hít sâu hết khả năng của mình trong từng hơi thở. Nếu đã biết trăm năm là hữu hạn, có gì ta không sống thật sâu? — Phạm Lữ Ân`,
-  `Hãy nhớ rằng trước khi được thế giới này phát hiện ra, những viên đá quý đã phải vùi trong cát bụi và chịu đựng nỗi cô đơn cả ngàn năm. — Tất Thúy Minh — Bỉ Shumin`  
+  `Hãy nhớ rằng trước khi được thế giới này phát hiện ra, những viên đá quý đã phải vùi trong cát bụi và chịu đựng nỗi cô đơn cả ngàn năm. — Tất Thúy Minh — Bỉ Shumin`,
+  “Nơi nào có tình yêu thương, nơi đó có sự sống.” — Mahatma Gandhi,
+“Chúng ta chỉ thực sự sống khi biết sống vì người khác.” — Albert Einstein,
+“Sự tử tế dù nhỏ bé cũng không bao giờ là vô ích.” — Aesop,
+“Không ai có thể làm bạn cảm thấy thấp kém nếu không có sự đồng ý của bạn.” — Eleanor Roosevelt,
+“Thành công không phải là chìa khóa của hạnh phúc. Hạnh phúc mới là chìa khóa của thành công.” — Albert Schweitzer,
+“Nghị lực và bền bỉ có thể chinh phục mọi thứ.” — Benjamin Franklin,
+“Tôi không thất bại. Tôi chỉ tìm ra 10.000 cách không hoạt động.” — Thomas Edison,
+“Điều không giết được ta sẽ khiến ta mạnh mẽ hơn.” — Friedrich Nietzsche,
+“Cuộc sống giống như đi xe đạp. Để giữ thăng bằng, bạn phải tiếp tục di chuyển.” — Albert Einstein,
+“Tương lai thuộc về những ai tin vào vẻ đẹp của ước mơ.” — Eleanor Roosevelt,
+“Hãy sống như thể bạn sẽ chết vào ngày mai. Hãy học như thể bạn sẽ sống mãi mãi.” — Mahatma Gandhi,
+“Giá trị của con người không nằm ở những gì họ có, mà ở những gì họ cho đi.” — Albert Schweitzer,
+“Đừng hỏi Tổ quốc đã làm gì cho ta, mà hãy hỏi ta đã làm gì cho Tổ quốc.” — John F. Kennedy,
+“Giáo dục là vũ khí mạnh nhất để thay đổi thế giới.” — Nelson Mandela,
+“Cách tốt nhất để tìm thấy chính mình là cống hiến vì người khác.” — Mahatma Gandhi,
+“Văn học là nhân học.” — Maxim Gorky,
+“Nghệ thuật là lĩnh vực của cái độc đáo.” — Nguyễn Đình Thi,
+“Nhà văn là người thư kí trung thành của thời đại.” — Honoré de Balzac,
+“Một tác phẩm thật giá trị phải vượt lên trên mọi bờ cõi và giới hạn.” — Lev Tolstoy,
+“Chi tiết nhỏ làm nên nhà văn lớn.” — Gustave Flaubert,
+“Thơ là tiếng nói đầu tiên, tiếng nói thứ nhất của tâm hồn khi đụng chạm tới cuộc sống.” — Nguyễn Đình Thi,
+“Văn chương gây cho ta những tình cảm ta không có, luyện cho ta những tình cảm ta sẵn có.” — Hoài Thanh,
+“Nhà văn tồn tại ở trên đời trước hết để làm công việc giống như kẻ nâng giấc cho những con người bị cùng đường, tuyệt lộ.” — Nguyễn Minh Châu,
+“Tác phẩm nghệ thuật chân chính bao giờ cũng là sự tôn vinh con người.” — Mikhail Sholokhov,
+“Văn chương không phải là sự tô hồng hiện thực mà là sự khám phá và sáng tạo hiện thực.” — Nam Cao,
+“Nghệ thuật không cần phải là ánh trăng lừa dối; nghệ thuật có thể chỉ có thể là tiếng đau khổ kia thoát ra từ những kiếp sống lầm than.” — Nam Cao,
+“Một tác phẩm nghệ thuật phải là kết quả của tình yêu.” — Lev Tolstoy,
+“Tác phẩm nghệ thuật sẽ chết nếu nó miêu tả cuộc sống chỉ để miêu tả.” — Vissarion Belinsky,
+“Văn học phản ánh hiện thực nhưng không sao chép hiện thực.” — Sóng Hồng,
+“Thơ trước hết là cuộc đời, sau đó mới là nghệ thuật.” — Tố Hữu,
+" “Tác phẩm nghệ thuật nào cũng xây dựng bằng những vật liệu mượn ở thực tại. Nhưng nghệ sĩ không những ghi lại cái đã có rồi mà còn muốn nói một điều gì mới mẻ”. (Nguyễn Đình Thi, Tiếng nói văn nghệ)
 
 ];
 
@@ -325,7 +358,6 @@ const inputEl=document.getElementById("input");
 const timeEl=document.getElementById("time");
 const wpmEl=document.getElementById("wpm");
 const scoreEl=document.getElementById("score");
-const timeSelect=document.getElementById("timeSelect");
 const boardEl=document.getElementById("board");
 
 let currentQuote="";
@@ -349,25 +381,25 @@ function normalizeText(text){
     .replace(/\s+/g," ")
     .trim();
 }
+  -------------------RANDOMQUOTE---------------------
 
-/* ===================== RANDOM QUOTE ===================== */
 function randomQuote(){
-  let randomIndex;
-  do{
-    randomIndex=Math.floor(Math.random()*quotes.length);
-  }while(randomIndex===lastIndex);
 
-  lastIndex=randomIndex;
-  currentQuote=quotes[randomIndex];
+  // Lấy 5 câu random
+  let fiveQuotes = getRandomFive(quotes);
 
-  quoteEl.innerHTML=currentQuote
+  // Chọn 1 câu trong 5 câu đó
+  let randomIndex = Math.floor(Math.random()*fiveQuotes.length);
+
+  currentQuote = fiveQuotes[randomIndex];
+
+  quoteEl.innerHTML = currentQuote
     .split("")
     .map(char=>`<span>${char}</span>`)
     .join("");
 
   inputEl.value="";
 }
-
 /* ===================== GAME ===================== */
 function formatTime(seconds){
   let minutes = Math.floor(seconds / 60);
@@ -389,7 +421,13 @@ function startGame(){
     if(timeLeft<=0){
       clearInterval(timer);
       saveScore();
-      alert("⏳ Hết giờ!\nScore: "+score+"\nWPM: "+wpmEl.textContent);
+      const messages = [
+  "Cảm ơn bạn vì đã kiên nhẫn luyện tập" , 
+  "Chúc mừng!Bạn đã kiên trì nhiều rồi" 
+];
+
+let randomMsg = messages[Math.floor(Math.random()*messages.length)];
+messageEl.textContent = randomMsg;
       resetGame();
     }
   },1000);
@@ -453,7 +491,7 @@ totalTyped = normalizedInput.length;
 
 /* ===================== WPM ===================== */
 function calculateWPM(){
-  let minutes=(parseInt(timeSelect.value)-timeLeft)/60;
+ let minutes=(600-timeLeft)/60;
   if(minutes>0){
     let wpm=Math.round((totalTyped/5)/minutes);
     wpmEl.textContent=wpm;
@@ -477,12 +515,12 @@ function renderBoard(){
 
 /* ===================== HEART EFFECT ===================== */
 function showHearts(){
-  for(let i=0;i<2;i++){
+  for(let i=0;i<5;i++){
     const heart=document.createElement("div");
     heart.classList.add("heart");
     heart.innerText="💚";
     heart.style.left=Math.random()*window.innerWidth+"px";
-    heart.style.top=window.innerHeight/2+"px";
+    heart.style.top=window.innerHeight/5+"px";
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),2000);
   }
@@ -493,14 +531,6 @@ function toggleDark(){
   document.body.classList.toggle("dark");
 }
 
-timeSelect.addEventListener("change",()=>{
-  timeLeft=parseInt(timeSelect.value);
-  timeEl.textContent=timeLeft;
-});
-timeSelect.addEventListener("change",()=>{
-  timeLeft=parseInt(timeSelect.value);
-  timeEl.textContent=formatTime(timeLeft);
-});
 renderBoard();
 randomQuote();
 </script>
@@ -508,5 +538,6 @@ randomQuote();
 </body>
 
 </html>
+
 
 
