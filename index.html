@@ -18,11 +18,11 @@
 
 body{
   margin:0;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#9ad0c2,#8ec6c5);
+  color:var(--text);
 }
+
 body.dark{
   --bg:#0f2027;
   --card:#1c2b2d;
@@ -31,9 +31,16 @@ body.dark{
   background:#0f2027;
 }
 
+.main-wrapper{
+  display:flex;
+  justify-content:center;
+  padding:40px;
+}
+
 .game-container{
   width:95%;
-  max-width:420px;
+  max-width:500px;
+  margin:20px auto;
 }
 
 .stats{
@@ -45,11 +52,17 @@ body.dark{
   padding:10px 15px;
   border-radius:12px;
 }
+body.dark .stats{
+  background:white;
+  color:black;
+}
 
-  .quote{
-  max-height:100px;
-  overflow-y:auto;
-  line-height:1.5;
+.quote{
+  margin:20px 0;
+  font-size:20px;
+  min-height:90px;
+  line-height:1.6;
+  transition:0.3s ease;
 }
 
 .correct{color:var(--mint);}
@@ -108,10 +121,10 @@ button,select{
 
 @media(max-width:768px){
   .main-wrapper{
-    padding:15px;
+    padding:20px;
   }
 }
-@media (max-width:600px){
+  @media (max-width:600px){
   .controls{
     flex-direction:column;
     gap:10px;
@@ -119,59 +132,34 @@ button,select{
 
   .controls select,
   .controls button{
-    width:86%;
+    width:100%;
   }
-}
-  /* ================= MOBILE FIX ================= */
-@media (max-width: 768px){
-
-  body{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-  }
-
-  .game-container{
-    width:95%;
-    max-width:500px;
-    margin:0 auto;
-  }
-
-  #quote{
-    font-size:16px;
-    line-height:1.6;
-  }
-
-}
-  #message{
-  margin-top:10px;
-  font-style:italic;
-  opacity:0.8;
 }
 </style>
 </head>
 
 <body>
-  
+
+<div class="main-wrapper">
   <div class="game-container">
 
     <div class="stats">
-      ⏳ <span id="time">10:00</span>
+      ⏳ <span id="time">60</span>s
       🔥 WPM: <span id="wpm">0</span>
       🏆 Score: <span id="score">0</span>
     </div>
-    <p id="message"></p>
 
-    <div id="quote" class="quote-box"></div>
+    <div class="quote" id="quote"></div>
 
-<textarea
-  id="input"
-  placeholder="Bạn hãy gõ những gì có trên màn hình vào đây..."
-></textarea>
-   <div class="controls">
-  <button onclick="toggleDark()">🌙 Dark</button>
-</div>
+    <textarea id="input" placeholder="bạn hãy gõ theo trên màn hình ở đây..."></textarea>
+
+    <div class="controls">
+      <select id="timeSelect">
+  <option value="600" selected>10 phút</option>
+  <option value="300">5 phút</option>
+  <option value="120">2 phút</option>
+  <option value="60">1 phút</option>
+</select>
 
     <div class="leaderboard">
       <h4>🏅 Top Scores:</h4>
@@ -179,239 +167,175 @@ button,select{
     </div>
 
   </div>
+</div>
 
 <script>
 /* ===================== QUOTES ===================== */
 /* DÁN TOÀN BỘ MẢNG QUOTES CỦA BẠN VÀO ĐÂY */
 const quotes = [
-'"Nơi nào có tình yêu thương, nơi đó có sự sống." - Mahatma Gandhi',
-'"Chúng ta chỉ thực sự sống khi biết sống vì người khác." - Albert Einstein',
-'"Sự tử tế dù nhỏ bé cũng không bao giờ là vô ích." - Aesop',
-'"Không ai có thể làm bạn cảm thấy thấp kém nếu không có sự đồng ý của bạn." - Eleanor Roosevelt',
-'"Thành công không phải là chìa khóa của hạnh phúc. Hạnh phúc mới là chìa khóa của thành công." - Albert Schweitzer',
-'"Nghị lực và bền bỉ có thể chinh phục mọi thứ." - Benjamin Franklin',
-'"Tôi không thất bại. Tôi chỉ tìm ra 10.000 cách không hoạt động." - Thomas Edison',
-'"Điều không giết được ta sẽ khiến ta mạnh mẽ hơn." - Friedrich Nietzsche',
-'"Cuộc sống giống như đi xe đạp. Để giữ thăng bằng, bạn phải tiếp tục di chuyển." - Albert Einstein',
-'"Tương lai thuộc về những ai tin vào vẻ đẹp của ước mơ." - Eleanor Roosevelt',
-'"Hãy sống như thể bạn sẽ chết vào ngày mai. Hãy học như thể bạn sẽ sống mãi mãi." - Mahatma Gandhi',
-'"Giá trị của con người không nằm ở những gì họ có, mà ở những gì họ cho đi." - Albert Schweitzer',
-'"Đừng hỏi Tổ quốc đã làm gì cho ta, mà hãy hỏi ta đã làm gì cho Tổ quốc." - John F. Kennedy',
-'"Giáo dục là vũ khí mạnh nhất để thay đổi thế giới." - Nelson Mandela',
-'"Cách tốt nhất để tìm thấy chính mình là cống hiến vì người khác." - Mahatma Gandhi',
-'"Nghệ thuật là lĩnh vực của cái độc đáo." - Nguyễn Đình Thi',
-'"Nhà văn là người thư kí trung thành của thời đại." - Honoré de Balzac',
-'"Một tác phẩm thật giá trị phải vượt lên trên mọi bờ cõi và giới hạn." - Lev Tolstoy',
-'"Chi tiết nhỏ làm nên nhà văn lớn." - Gustave Flaubert',
-'"Thơ là tiếng nói đầu tiên, tiếng nói thứ nhất của tâm hồn khi đụng chạm tới cuộc sống." - Nguyễn Đình Thi',
-'"Thơ ca là tiếng nói của trái tim." - Xuân Diệu',
-'"Văn chương gây cho ta những tình cảm ta không có, luyện những tình cảm ta sẵn có." - Hoài Thanh',
-'"Nhà văn tồn tại ở trên đời trước hết để làm công việc giống như kẻ nâng giấc cho những con người bị cùng đường, tuyệt lộ." - Nguyễn Minh Châu',
-'"Tác phẩm nghệ thuật chân chính bao giờ cũng là sự tôn vinh con người." - Mikhail Sholokhov',
-'"Văn chương không phải là sự tô hồng hiện thực mà là sự khám phá và sáng tạo hiện thực." - Nam Cao',
-'"Nghệ thuật không cần phải là ánh trăng lừa dối; nghệ thuật có thể chỉ là tiếng đau khổ kia thoát ra từ những kiếp sống lầm than." - Nam Cao',
-'"Một tác phẩm nghệ thuật phải là kết quả của tình yêu." - Lev Tolstoy',
-'"Tác phẩm nghệ thuật sẽ chết nếu nó miêu tả cuộc sống chỉ để miêu tả." - Vissarion Belinsky',
-'"Văn học phản ánh hiện thực nhưng không sao chép hiện thực." - Sóng Hồng',
-'"Thơ trước hết là cuộc đời, sau đó mới là nghệ thuật." - Tố Hữu',
-'"Mỗi nhà văn chân chính đều là một nhà nhân đạo từ trong cốt tủy." - Sê-khốp',
-'"Văn học phản ánh hiện thực nhưng không sao chép hiện thực." - Lỗ Tấn',
-'"Nhà văn là người thư ký trung thành của thời đại." - Balzac',
-'"Thơ ca là tiếng nói đầu tiên của tâm hồn khi chạm vào cuộc sống." - Tố Hữu',
-'"Tác phẩm lớn luôn đặt ra nhiều câu hỏi hơn là trả lời." - Umberto Eco',
-'"Nghệ thuật vị nhân sinh." - Tuyên ngôn văn học hiện thực',
-'"Văn chương trước hết phải là văn chương." - Thạch Lam',
-'"Nhà văn tồn tại để bênh vực con người." - Nguyễn Minh Châu',
-'"Sứ mệnh của văn học là làm cho con người trở nên tốt đẹp hơn." - Lev Tolstoy',
-'"Một tác phẩm không có tư tưởng cũng như một cơ thể không có linh hồn." - Victor Hugo',
-'"Giá trị của văn học nằm ở sức ám ảnh lâu dài." - Milan Kundera',
-'"Văn học chân chính không bao giờ phản bội con người." - Nguyên Ngọc',
-'"Cái đẹp cứu rỗi thế giới." - Fyodor Dostoevsky',
-'"Ngôn ngữ là vỏ của tư tưởng." - Antoine de Rivarol',
-'"Văn chương là tấm gương phản chiếu xã hội." - Stendhal',
+ Nhà văn tồn tại ở trên đời trước hết để làm công việc giống như kẻ nâng giấc cho những người cùng đường tuyệt lộ bị cái ác hoặc số phận đen đủi dồn đến chân tường; để bênh vực cho những con người không còn ai bênh vực và để cất lên tiếng nói cho những số phận bị lãng quên. — Nguyễn Minh Châu,
 
-'"Sống là cho đâu chỉ nhận riêng mình." - Tố Hữu',
-'"Không có áp lực, không có kim cương." - Thomas Carlyle',
-'"Hãy sống như thể bạn sẽ chết vào ngày mai." - Mahatma Gandhi',
-'"Lòng tốt là ngôn ngữ mà người điếc có thể nghe và người mù có thể thấy." - Mark Twain',
-'"Đừng chờ cơ hội, hãy tạo ra nó." - George Bernard Shaw',
-'"Tương lai phụ thuộc vào những gì bạn làm hôm nay." - Mahatma Gandhi',
-'"Giá trị của bản thân nằm ở sự nỗ lực không ngừng." - Khuyết danh',
-'"Thành công không phải là đích đến, mà là hành trình." - Arthur Ashe',
-'"Chúng ta không thể thay đổi hướng gió, nhưng có thể điều chỉnh cánh buồm." - Aristotle',
-'"Hạnh phúc không phải là có tất cả, mà là biết trân trọng những gì mình có." - Khuyết danh',
-'"Điều quan trọng không phải là bạn đứng ở đâu, mà là bạn đang hướng về đâu." - Oliver Wendell Holmes',
-'"Muốn đi nhanh hãy đi một mình, muốn đi xa hãy đi cùng nhau." - Tục ngữ châu Phi',
-'"Kỷ luật là cầu nối giữa mục tiêu và thành tựu." - Jim Rohn',
-'"Bạn không cần phải vĩ đại để bắt đầu, nhưng phải bắt đầu để trở nên vĩ đại." - Zig Ziglar',
-'"Khó khăn không phải để đánh bại bạn, mà để làm bạn mạnh mẽ hơn." - Khuyết danh',
-'"Sự khác biệt giữa người thành công và kẻ thất bại là ở sự kiên trì." - Vince Lombardi',
-'"Thái độ quyết định độ cao của bạn." - Zig Ziglar',
-'"Đừng so sánh mình với người khác, hãy so sánh mình với phiên bản hôm qua." - Khuyết danh',
-'"Học vấn không phải là đích đến, mà là hành trình suốt đời." - Albert Einstein',
-'"Tự do lớn nhất là được là chính mình." - Jim Morrison',
- `Nhà văn tồn tại ở trên đời trước hết để làm công việc giống như kẻ nâng giấc cho những người cùng đường tuyệt lộ bị cái ác hoặc số phận đen đủi dồn đến chân tường; để bênh vực cho những con người không còn ai bênh vực và để cất lên tiếng nói cho những số phận bị lãng quên. — Nguyễn Minh Châu`,
+Văn học và đời sống là hai vòng tròn đồng tâm mà tâm điểm là con người. Nhà văn nếu đánh mất con người thì cũng đồng thời đánh mất chính lý do tồn tại của văn chương. — Nguyễn Minh Châu,
 
-`Văn học và đời sống là hai vòng tròn đồng tâm mà tâm điểm là con người. Nhà văn nếu đánh mất con người thì cũng đồng thời đánh mất chính lý do tồn tại của văn chương. — Nguyễn Minh Châu`,
+Thơ là mở ra được một cái gì mà trước câu thơ đó, trước nhà thơ đó, vẫn như còn bị phong kín; mở ra không phải để phô bày mà để làm hiển lộ một phần linh hồn của cuộc sống. — Nguyễn Tuân,
 
-`Thơ là mở ra được một cái gì mà trước câu thơ đó, trước nhà thơ đó, vẫn như còn bị phong kín; mở ra không phải để phô bày mà để làm hiển lộ một phần linh hồn của cuộc sống. — Nguyễn Tuân`,
+Mặt trời chói lọi của trí tưởng tượng chỉ có thể cháy sáng khi được cọ xát với mặt đất của hiện thực. Trong khoảng trống rỗng của sự xa rời đời sống, nó sẽ lụi tắt. — Paustovsky,
 
-`Mặt trời chói lọi của trí tưởng tượng chỉ có thể cháy sáng khi được cọ xát với mặt đất của hiện thực. Trong khoảng trống rỗng của sự xa rời đời sống, nó sẽ lụi tắt. — Paustovsky`,
+Tác phẩm văn học là sự cưới xin giữa ngoại vật và nội tâm nhà văn; cái bên ngoài và cái bên trong hòa hợp với nhau thì tác phẩm mới có sinh khí và sức sống bền lâu. — Xuân Diệu,
 
-`Tác phẩm văn học là sự cưới xin giữa ngoại vật và nội tâm nhà văn; cái bên ngoài và cái bên trong hòa hợp với nhau thì tác phẩm mới có sinh khí và sức sống bền lâu. — Xuân Diệu`,
+Một tác phẩm thật có giá trị phải vượt lên trên tất cả những bờ cõi và giới hạn. Nó phải chứa đựng một cái gì lớn lao, mạnh mẽ, vừa đau đớn lại vừa phấn khởi; nó làm cho người gần người hơn. — Nam Cao,
 
-`Một tác phẩm thật có giá trị phải vượt lên trên tất cả những bờ cõi và giới hạn. Nó phải chứa đựng một cái gì lớn lao, mạnh mẽ, vừa đau đớn lại vừa phấn khởi; nó làm cho người gần người hơn. — Nam Cao`,
+Nhà văn không có phép thần thông để vượt ra ngoài thế giới này, nhưng thế giới ấy qua con mắt nhà văn phải mang một hình sắc riêng, phải có linh hồn riêng và tiếng nói riêng. — Hoài Thanh,
 
-`Nhà văn không có phép thần thông để vượt ra ngoài thế giới này, nhưng thế giới ấy qua con mắt nhà văn phải mang một hình sắc riêng, phải có linh hồn riêng và tiếng nói riêng. — Hoài Thanh`,
+Tác phẩm văn học như một con quay kì lạ, chỉ có thể xuất hiện trong vận động. Muốn nó sống, phải có hành động cụ thể là sự đọc; ngoài sự đọc, nó chỉ còn là những vệt mực đen trên trang giấy trắng. — Jean-Paul Sartre,
 
-`Tác phẩm văn học như một con quay kì lạ, chỉ có thể xuất hiện trong vận động. Muốn nó sống, phải có hành động cụ thể là sự đọc; ngoài sự đọc, nó chỉ còn là những vệt mực đen trên trang giấy trắng. — Jean-Paul Sartre`,
+Bài thơ là sợi dây truyền tình cảm cho người đọc; mỗi chữ, mỗi hình ảnh trong thơ đều phải mang trong nó một phần rung động chân thật của trái tim người viết. — Nguyễn Đình Thi,
 
-`Bài thơ là sợi dây truyền tình cảm cho người đọc; mỗi chữ, mỗi hình ảnh trong thơ đều phải mang trong nó một phần rung động chân thật của trái tim người viết. — Nguyễn Đình Thi`,
+Nghệ thuật là sự vươn tới, sự hướng về và sự níu giữ mãi mãi tính người cho con người trong những hoàn cảnh có thể làm con người đánh mất chính mình. — Nguyên Ngọc,
 
-`Nghệ thuật là sự vươn tới, sự hướng về và sự níu giữ mãi mãi tính người cho con người trong những hoàn cảnh có thể làm con người đánh mất chính mình. — Nguyên Ngọc`,
+Cái phong phú, đa dạng vô cùng của văn học nghệ thuật là ở chỗ mỗi tác phẩm mở ra một thế giới mới lạ, không lặp lại, góp phần phản ánh muôn màu muôn vẻ của đời sống và tâm hồn con người. — Lê Đình Kỵ,
 
-`Cái phong phú, đa dạng vô cùng của văn học nghệ thuật là ở chỗ mỗi tác phẩm mở ra một thế giới mới lạ, không lặp lại, góp phần phản ánh muôn màu muôn vẻ của đời sống và tâm hồn con người. — Lê Đình Kỵ`,
+Tình yêu của người nghệ sĩ vừa là niềm hân hoan say mê vừa là nỗi đau đớn khắc khoải; đó là mối quan hoài thường trực về số phận và hạnh phúc của con người. — Nguyễn Minh Châu,
 
-`Tình yêu của người nghệ sĩ vừa là niềm hân hoan say mê vừa là nỗi đau đớn khắc khoải; đó là mối quan hoài thường trực về số phận và hạnh phúc của con người. — Nguyễn Minh Châu`,
+Nhà văn là người đi tìm, gắng đi tìm những hạt ngọc ẩn giấu trong bề sâu tâm hồn con người và làm cho những hạt ngọc ấy tỏa sáng trên trang viết. — Nguyễn Minh Châu,
 
-`Nhà văn là người đi tìm, gắng đi tìm những hạt ngọc ẩn giấu trong bề sâu tâm hồn con người và làm cho những hạt ngọc ấy tỏa sáng trên trang viết. — Nguyễn Minh Châu`,
+Sống đã rồi hãy viết, hãy hòa mình vào cuộc sống vĩ đại của nhân dân; bởi chỉ có đời sống mới cung cấp cho nhà văn chất liệu chân thực và giàu sức lay động. — Nam Cao,
 
-`Sống đã rồi hãy viết, hãy hòa mình vào cuộc sống vĩ đại của nhân dân; bởi chỉ có đời sống mới cung cấp cho nhà văn chất liệu chân thực và giàu sức lay động. — Nam Cao`,
+Chi tiết làm nên bụi vàng của tác phẩm; chính những chi tiết nhỏ bé nhưng đắt giá ấy làm nên linh hồn và sức nặng cho toàn bộ tác phẩm. — Paustovsky,
 
-`Chi tiết làm nên bụi vàng của tác phẩm; chính những chi tiết nhỏ bé nhưng đắt giá ấy làm nên linh hồn và sức nặng cho toàn bộ tác phẩm. — Paustovsky`,
-
-  `Nghệ thuật không cần phải là ánh trăng lừa dối, nghệ thuật không nên là ánh trăng lừa dối. Nghệ thuật có thể chỉ là tiếng đau khổ kia, thoát ra từ những kiếp sống lầm than.” — Nam Cao`,
-  `Một tác phẩm nghệ thuật phải là kết quả của tình yêu. Tình yêu con người, ước mơ cháy bỏng vì một xã hội công bằng, bình đẳng bái ái luôn luôn thôi thúc các nhà văn sống và viết, vắt cạn kiệt những dòng suy nghĩ, hiến dâng bầu máu nóng của mình cho nhân loại.” — L. Tôn-xtôi`,
-  `Tác phẩm nghệ thuật sẽ chết nếu nó miêu tả cuộc sống chỉ để miêu tả, nếu nó không phải là tiếng thét khổ đau hay lời ca tụng hân hoan, nếu nó không đặt ra những câu hỏi hoặc trả lời những câu hỏi đó.” — Biêlinxki`,
-  `Nếu như cảm hứng nhân bản nghiêng về đồng cảm với những khát vọng rất người của con người, cảm hứng nhân văn thiên về ngợi ca vẻ đẹp của con người thì cảm hứng nhân đạo là cảm hứng bao trùm.” — Hoài Thanh`,
-  `Đối với tôi văn chương không phải là cách đem đến cho người đọc sự thoát li hay sự quên; trái lại văn chương là một thứ khí giới thanh cao và đắc lực mà chúng ta có, để vừa tố cáo và thay đổi một cái thế giới giả dối, tàn ác, vừa làm cho lòng người đọc thêm trong sạch và phong phú hơn…” — (Theo dòng, Thạch Lam)`,
-  `Ở đâu có lao động thì ở đó có sáng tạo ra ngôn ngữ. Nhà văn không chỉ học tập ngôn ngữ của nhân dân mà còn là người phát triển ra ngôn ngữ sáng tạo, không nên ăn bám vào người khác. Giàu ngôn ngữ thì văn sẽ hay… Cũng cùng một vốn ngôn ngữ ấy nhưng sử dụng có sáng tạo thì văn sẽ có bề thế và kích thước. Có vốn mà không biết sử dụng chỉ như nhà giàu giữ của. Dùng chữ như đánh cờ tướng, chữ nào để chỗ nào phải đúng vị trí của nó. Văn phải linh hoạt. Văn không linh hoạt gọi là văn cứng đơ thấp khớp…” — Nguyễn Tuân`,
-  `Không có gì nâng đỡ tôi suốt cuộc đời, trong những hoàn cảnh trái ngược nhất ngoài tư tưởng nghệ thuật và bổn phận của một nhà văn” — Albert Camus`,
-  `Trong hoàn cảnh khắc nghiệt vừa qua, không tránh khỏi có lúc chúng ta tự hỏi, văn học để làm gì, văn học cần cho ai? Văn học có cần cho người bệnh đang giành lấy từng hơi thở tàn trong bệnh viện dã chiến? Văn học có cần cho người mẹ già đẩy chiếc xe với chút tài sản bé mọn trên đường về miền Tây? Văn học có cần cho đôi vợ chồng trẻ chở con dưới mưa gió trên đỉnh đèo Hải Vân theo đoàn người trốn dịch…” — Nhà giáo Huỳnh Như Phương`,
-  `Không có tiếng nói riêng, không mang lại những điều mới mẻ cho văn chương mà chỉ giẫm theo đường mòn thì tác phẩm nghệ thuật sẽ chết.” — Leonit Leonop`,
-  `Một tác phẩm thật có giá trị, phải vượt lên bên trên tất cả các bờ cõi và giới hạn, phải là một tác phẩm chung cho cả loài người. Nó phải chứa đựng một cái gì lớn lao, mạnh mẽ, vừa đau đớn lại vừa phấn khởi. Nó ca tụng lòng thương, tình bác ái, sự công bình…Nó làm cho người gần người hơn.” — Nam Cao`,
-  `Có thể vượt qua giới hạn lớn lao của loài người không phải bằng cách tự xóa mình đi mà bằng cách mở rộng bản sắc của chính mình.” — Tagore`,
-  `Nghệ sĩ là người biết khai thác những ấn tượng riêng, chủ quan của mình, tìm thấy những ấn tượng có giá trị khái quát và làm cho những ấn tượng ấy có được hình thức riêng.” — M.Gorki`,
-  `Văn học thế giới đã có trọn vẹn hai trăm năm huy hoàng của thế kỷ XIX và XX, lịch sử nhân loại đã không phụ văn học. Việc những nhà văn còn sót lại nên làm, chính là diễn xuất một cách hết sức vẻ vang vai diễn phụ của mình. Nhưng chúng ta cũng chớ quên diễn viên chính vẫn là diễn viên chính, diễn viên phụ vẫn phải diễn vai phụ mà lịch sử đã phân công. Chấp nhận sự bên lề của văn học chẳng phải một việc tồi tệ.” — Nhà văn Diêm Liên Khoa`,
-  `Văn học là thế giới hoang tưởng, ảo tưởng, hão huyền trong cuộc đời thực tẻ nhạt, dung tục, của cảm xúc nhục cảm, vớ vẩn, suy đồi, là vàng trong cát, sự bất lực thê thảm. Chúng ta làm được gì khi xây những lâu đài cát trên bờ biển xanh? — Nguyễn Huy Thiệp`,
-  `Tương lai chỉ thuộc về những ai nắm được phong cách” — Victor Hugo`,
-  `Muốn chấn hưng nền văn chương ngày nay, phải có những tàu năng tuấn tú” — Cố Viêm Võ`,
-  `Nghệ thuật không phục vụ một đảng phái nào nó chỉ phụng sự cho nỗi thống khổ và quyền tự do của con người” — Albert Camus`,
-  `Sự còn lại mất đi của số phận những tác phẩm văn học cũng như những đời văn trong độ lùi thời gian bao giờ cũng ngầm chứa đựng một sự lựa chọn đầy huyền diệu và công bằng” — Nguyễn Minh Châu`,
-  `Tác phẩm nghệ thuật sẽ chết nếu nó miêu tả cuộc sống chỉ để miêu tả, nếu nó không phải là tiếng thét khổ đau hay lời ca tụng hân hoan, nếu nó không đặt ra những câu hỏi hoặc trả lời những câu hỏi đó” — Belinxky`,
-  `Bài thơ hay là bài thơ đọc lên không còn thấy câu thơ mà chỉ còn thấy tình người và tôi muốn thơ phải thật là gan ruột của mình” — Tố Hữu`,
-  `Những chữ xơ xác nhất mà chúng ta đã nói đến cạn cùng, mất sạch tính hình tượng đối với chúng ta, những chữ ấy trong thơ ca lại lấp lánh, lại kêu giòn và tỏa hương”. — Pautopsky`,
-  `Tác phẩm văn học là sự cưới xin giữ ngoại vật và nội tâm nhà văn” — Xuân Diệu`,
-  `Nghệ thuật không tái tạo những gì ta thấy đúng hơn là nó mở mắt cho ta” — Picasso`,
-  `Khi văn xuôi đã đạt tới mức toàn Thiện Toàn Mỹ thì về bản chất nó đã thực là thơ” — Paustovsky`,
-  `Mặt trời chói lọi của trí tưởng tượng chỉ có thể cháy sáng khi được cọ xát với mặt đất. Nó không thể cháy trong khoảng trống rỗng. Trong khoảng trống rỗng nó sẽ tắt” — Paustovsky`,
-  `Cái phong phú đa dạng vô cùng vô tận của văn học nghệ thuật là ở chỗ: mỗi tác phẩm mở ra một thế giới mới lạ, không lặp lại, góp phần phản ánh thể hiện cái muôn màu muôn vẻ của đời sống và của tâm hồn con người” — Lê Đình Kỵ`,
-  `Nghệ thuật là sự vươn tới, sự hướng về, sự níu giữ mãi mãi tính người cho con người”. — Nguyên Ngọc`,
-  `Loại văn chương tột bậc của thiên hạ không ở trong cái giới hạn đóng mở kết cấu” — Nhữ Bá Sỹ`,
-  `Văn học không quan tâm đến câu trả lời do nhà văn đem lại, mà quan tâm đến những câu hỏi do nhà văn đặt ra và những câu hỏi này luôn rộng hơn bất kì câu trả lời cặn kẽ nào” — Claudio Magris`,
-  `Nhiệm vụ của nhà văn phải là bộ dây thần kinh để cảm ứng, phải là tay chân để cung thủ. Muốn sáng tác những tác phẩm vĩ đại cho nền văn hoá tương lai, cố nhiên rất tốt, nhưng nhà văn đầu tranh cho hiện tại, đồng thời cũng đấu tranh cho tương lai nữa, bởi vì mất hiện tại làm gì có tương lai” — Lỗ Tấn`,
-  `Nhà thơ, đối với vũ trụ nhân sinh, nên bước vào bên trong mà lại nên đi ra bên ngoài. Bước vào bên trong mới có thể viết được. Đi ra bên ngoài mới có thể quan sát được. Bước vào bên trong mới có sinh khí. Đi ra bên ngoài mới đạt cao siêu” — Vương Quốc Duy đời Thanh`,
-  `Ngôn ngữ của thi ca khác với ngôn ngữ của đời sống ở chỗ là nó gợi ra được những liên tưởng phong phú, khơi dậy ở tâm hồn con người những rung động sâu xa, biến những tầm thường của đời sống thành những gì lãng mạn, cao cả” — Lâm Ngữ Đường`,
-  `Đời sống xanh tươi là cội nguồn sâu xa của văn học” — Goethe`,
-  `Chỉ có cuộc đời rộng rãi, chỉ có trường đời vô thường định mới dạy cho người ta biết được những câu đẹp đẽ” — Nguyễn Tuân`,
-  `Mỗi bài thơ mà hôm nay tôi trao vào tay bạn đọc thân mến là nảy sinh cùng với mầm mống trên cái cây xao động của cuộc đời đang nở hoa. Coi thường quyển sách này sẽ là tàn nhẫn bởi vì nó gắn liền khăng khít với bản thân cuộc đời tôi.” — Lorca`,
-  `Ý nghĩa trong thơ tôi là do bạn đọc cho nó” — P. Valery`,
-  `Đọc một câu thơ hay, ta thường có cảm giác đứng trước một bến đò gió nổi, một khao khát sang sông, một thúc đẩy lên đường hướng đến những vùng trời đẹp hơn, nhân tính hơn…” — Lê Đạt`,
-  `Một câu thơ hay là một câu thơ có sức gợi” — Lưu Trọng Lư`,
-  `Trong đời sống văn học, những nhà văn có tài năng, người thì đóng góp vào 1 cách viết, người thì đóng góp vào cách sử dụng ngôn ngữ, có người lại chỉ cho ta thấy những thứ rất nhỏ bé, đặc sắc mà giàu giá trị. Nhưng trên tất cả, anh ta phải cho người đọc thấy được tiếng nói riêng của anh ta trong 1 vấn đề mà nhiều người đang quan tâm đến.” — Nguyễn Minh Châu`,
-  `Nhà văn không có phép thần thông để vượt ra ngoài thế giới này, nhưng thế giới này trong con mắt nhà văn phải có một hình sắc riêng” — Hoài Thanh`,
-  `Tác phẩm văn học như con quay kì lạ, chỉ có thể xuất hiện trong vận động. Muốn làm cho nó xuất hiện, cần phải có một hoạt động cụ thể là sự đọc. Và tác phẩm văn học chỉ kéo dài chừng nào sự đọc còn có thể tiếp tục. Ngoài sự đọc ra, nó chỉ còn là những vệt đen trên giấy trắng” — J. Paul Sartre`,
-  `Nhà văn tồn tại ở trên đời trước hết để làm công việc giống như kẻ nâng giấc cho những người cùng đường tuyệt lộ bị cái ác hoặc số phận đen đủi dồn đến chân tường; để bênh vực cho những người không còn ai bênh vực” — Nguyễn Minh Châu`,
-  `Thơ không cần nhiều từ ngữ. Nó cũng không quan tâm đến hình xác của sự sống. Nó chỉ cần cảm nhận và truyền đi 1 chút linh hồn của cảnh vật thông qua linh hồn thi sĩ” — Nguyễn Đăng Mạnh`,
-  `Thơ là tiếng nói hồn nhiên nhất của tâm hồn con người trước cuộc đời” — Tố Hữu`,
-  `Cái bóng của độc giả luôn luôn cúi xuống sau lưng nhà văn, ngay khi mà nhà văn ngồi trước trang giấy trắng.” — Aimatov`,
-  `Bài thơ là sợi dậy truyền tình cảm cho người đọc” — Nguyễn Đình Thi`,
-  `Cuộc sống là cánh đồng màu mở để cho thơ bén rễ sinh sôi” — Puskin`,
-  `Câu thơ phải luôn bất ổn và xôn xao – Không thể nằm yên mà ngủ được nào” — Chế Lan Viên`,
-  `Sáng tác thơ là một việc do cá nhân thi sĩ làm, một thứ sản xuất đặc biệt và cá thể” — Xuân Diệu`,
-  `Khi tác phẩm kết thúc, ấy là sự sống của nó mới thực sự bắt đầu” — Aimatov`,
-  `Đụng chạm với cuộc sống hằng ngày tâm trạng nảy lên bao nhiêu hình ảnh như lúc búa đập vào sắt trên đe. Người làm thơ lượm lặt những tia sáng ấy, kết thành một bó sáng. Đó là hình ảnh thơ” — Nguyễn Đình Thi`,
-  `Nhà văn là người đi tìm, gắng đi tìm những hạt ngọc ẩn giấu trong bề sâu tâm hồn con người” — Nguyễn Minh Châu`,
-  `Ý hết mà lời dừng, ấy là lời rất mừng trong thiên hạ. Nhưng lời dừng mà ý chưa hết lại càng hay tuyệt” — Lê Quý Đôn`,
-  `Tác phẩm văn học là đơn vị sáng tác của nhà văn, là đối tượng thưởng thức của người đọc, là kết quả của trình độ ý thức xã hội, ý thức thẩm mĩ thời đại, là chỉnh thể trung tâm của hoạt động văn học” — Lê Lưu Oanh`,
-  `Chủ đề là một ý tưởng nảy mầm trong vốn kinh nghiệm của tác giả, do cuộc sống mách bảo cho tác giả, nhưng vẫn còn ẩn náu trong cái vốn ấn tượng của anh ta dưới một dạng thức chưa hình thành và đòi hỏi phải được thể hiện trong những hình tượng, thúc đẩy tác giả tìm cách hình tượng hóa nó” — M. Gorky`,
-  `Nhà thơ gói tâm tình mình vào trong thơ. Người đọc mở ra bỗng thấy tâm tình của chính mình” — Lưu Quý Kỳ`,
-  `Tôi thấy văn chương của mình (và cả bản thân mình) sao giống trái sầu riêng quá trời, có người thích, khen thơm, có người bưng mũi quay đi vì chê nó nặng mùi. Nhưng khi bắt đầu kết trái, sầu riêng đâu định trước sẽ dâng tặng cho riêng ai, nên chẳng bẻ mình bẻ mẩy để lấy lòng người…” — Nguyễn Ngọc Tư`,
-  `Người vẫn còn mang vết thương đã toan đi chữa vết thương cho người khác. Tôi nghĩ nghề viết và người viết cũng đơn giản vậy, chữa lành, an ủi những vết thương của người đời để làm dịu vết thương của chính mình” — Nguyễn Ngọc Tư`,
-  `Tình yêu này của người nghệ sĩ vừa là một niềm hân hoan say mê, vừa là một nỗi đau đớn, khắc khoải, một mối quan hoài thường trực về số phận, hạnh phúc của những người chung quanh mình” — Nguyễn Minh Châu`,
-  `"Thơ là mở ra được một cái gì mà trước câu thơ đó, trước nhà thơ đó, vẫn như là bị phong kín” — Nguyễn Tuân`,
-  `Thơ ca, nếu không có người tôi đã mồ côi” — Rasul Gamzatov`,
-  `Mỗi người viết văn chỉ có khả năng thành công qua những cái mình thông thuộc” — Tô Hoài`,
-  `Làm thơ có lúc như lấy người điếc lác ù tai làm bạn tri âm,
+  Nghệ thuật không cần phải là ánh trăng lừa dối, nghệ thuật không nên là ánh trăng lừa dối. Nghệ thuật có thể chỉ là tiếng đau khổ kia, thoát ra từ những kiếp sống lầm than.” — Nam Cao,
+  Một tác phẩm nghệ thuật phải là kết quả của tình yêu. Tình yêu con người, ước mơ cháy bỏng vì một xã hội công bằng, bình đẳng bái ái luôn luôn thôi thúc các nhà văn sống và viết, vắt cạn kiệt những dòng suy nghĩ, hiến dâng bầu máu nóng của mình cho nhân loại.” — L. Tôn-xtôi,
+  Tác phẩm nghệ thuật sẽ chết nếu nó miêu tả cuộc sống chỉ để miêu tả, nếu nó không phải là tiếng thét khổ đau hay lời ca tụng hân hoan, nếu nó không đặt ra những câu hỏi hoặc trả lời những câu hỏi đó.” — Biêlinxki,
+  Nếu như cảm hứng nhân bản nghiêng về đồng cảm với những khát vọng rất người của con người, cảm hứng nhân văn thiên về ngợi ca vẻ đẹp của con người thì cảm hứng nhân đạo là cảm hứng bao trùm.” — Hoài Thanh,
+  Đối với tôi văn chương không phải là cách đem đến cho người đọc sự thoát li hay sự quên; trái lại văn chương là một thứ khí giới thanh cao và đắc lực mà chúng ta có, để vừa tố cáo và thay đổi một cái thế giới giả dối, tàn ác, vừa làm cho lòng người đọc thêm trong sạch và phong phú hơn…” — (Theo dòng, Thạch Lam),
+  Ở đâu có lao động thì ở đó có sáng tạo ra ngôn ngữ. Nhà văn không chỉ học tập ngôn ngữ của nhân dân mà còn là người phát triển ra ngôn ngữ sáng tạo, không nên ăn bám vào người khác. Giàu ngôn ngữ thì văn sẽ hay… Cũng cùng một vốn ngôn ngữ ấy nhưng sử dụng có sáng tạo thì văn sẽ có bề thế và kích thước. Có vốn mà không biết sử dụng chỉ như nhà giàu giữ của. Dùng chữ như đánh cờ tướng, chữ nào để chỗ nào phải đúng vị trí của nó. Văn phải linh hoạt. Văn không linh hoạt gọi là văn cứng đơ thấp khớp…” — Nguyễn Tuân,
+  Không có gì nâng đỡ tôi suốt cuộc đời, trong những hoàn cảnh trái ngược nhất ngoài tư tưởng nghệ thuật và bổn phận của một nhà văn” — Albert Camus,
+  Trong hoàn cảnh khắc nghiệt vừa qua, không tránh khỏi có lúc chúng ta tự hỏi, văn học để làm gì, văn học cần cho ai? Văn học có cần cho người bệnh đang giành lấy từng hơi thở tàn trong bệnh viện dã chiến? Văn học có cần cho người mẹ già đẩy chiếc xe với chút tài sản bé mọn trên đường về miền Tây? Văn học có cần cho đôi vợ chồng trẻ chở con dưới mưa gió trên đỉnh đèo Hải Vân theo đoàn người trốn dịch…” — Nhà giáo Huỳnh Như Phương,
+  Không có tiếng nói riêng, không mang lại những điều mới mẻ cho văn chương mà chỉ giẫm theo đường mòn thì tác phẩm nghệ thuật sẽ chết.” — Leonit Leonop,
+  Một tác phẩm thật có giá trị, phải vượt lên bên trên tất cả các bờ cõi và giới hạn, phải là một tác phẩm chung cho cả loài người. Nó phải chứa đựng một cái gì lớn lao, mạnh mẽ, vừa đau đớn lại vừa phấn khởi. Nó ca tụng lòng thương, tình bác ái, sự công bình…Nó làm cho người gần người hơn.” — Nam Cao,
+  Có thể vượt qua giới hạn lớn lao của loài người không phải bằng cách tự xóa mình đi mà bằng cách mở rộng bản sắc của chính mình.” — Tagore,
+  Nghệ sĩ là người biết khai thác những ấn tượng riêng, chủ quan của mình, tìm thấy những ấn tượng có giá trị khái quát và làm cho những ấn tượng ấy có được hình thức riêng.” — M.Gorki,
+  Văn học thế giới đã có trọn vẹn hai trăm năm huy hoàng của thế kỷ XIX và XX, lịch sử nhân loại đã không phụ văn học. Việc những nhà văn còn sót lại nên làm, chính là diễn xuất một cách hết sức vẻ vang vai diễn phụ của mình. Nhưng chúng ta cũng chớ quên diễn viên chính vẫn là diễn viên chính, diễn viên phụ vẫn phải diễn vai phụ mà lịch sử đã phân công. Chấp nhận sự bên lề của văn học chẳng phải một việc tồi tệ.” — Nhà văn Diêm Liên Khoa,
+  Văn học là thế giới hoang tưởng, ảo tưởng, hão huyền trong cuộc đời thực tẻ nhạt, dung tục, của cảm xúc nhục cảm, vớ vẩn, suy đồi, là vàng trong cát, sự bất lực thê thảm. Chúng ta làm được gì khi xây những lâu đài cát trên bờ biển xanh? — Nguyễn Huy Thiệp,
+  Tương lai chỉ thuộc về những ai nắm được phong cách” — Victor Hugo,
+  Muốn chấn hưng nền văn chương ngày nay, phải có những tàu năng tuấn tú” — Cố Viêm Võ,
+  Nghệ thuật không phục vụ một đảng phái nào nó chỉ phụng sự cho nỗi thống khổ và quyền tự do của con người” — Albert Camus,
+  Sự còn lại mất đi của số phận những tác phẩm văn học cũng như những đời văn trong độ lùi thời gian bao giờ cũng ngầm chứa đựng một sự lựa chọn đầy huyền diệu và công bằng” — Nguyễn Minh Châu,
+  Tác phẩm nghệ thuật sẽ chết nếu nó miêu tả cuộc sống chỉ để miêu tả, nếu nó không phải là tiếng thét khổ đau hay lời ca tụng hân hoan, nếu nó không đặt ra những câu hỏi hoặc trả lời những câu hỏi đó” — Belinxky,
+  Bài thơ hay là bài thơ đọc lên không còn thấy câu thơ mà chỉ còn thấy tình người và tôi muốn thơ phải thật là gan ruột của mình” — Tố Hữu,
+  Những chữ xơ xác nhất mà chúng ta đã nói đến cạn cùng, mất sạch tính hình tượng đối với chúng ta, những chữ ấy trong thơ ca lại lấp lánh, lại kêu giòn và tỏa hương”. — Pautopsky,
+  Tác phẩm văn học là sự cưới xin giữ ngoại vật và nội tâm nhà văn” — Xuân Diệu,
+  Nghệ thuật không tái tạo những gì ta thấy đúng hơn là nó mở mắt cho ta” — Picasso,
+  Khi văn xuôi đã đạt tới mức toàn Thiện Toàn Mỹ thì về bản chất nó đã thực là thơ” — Paustovsky,
+  Mặt trời chói lọi của trí tưởng tượng chỉ có thể cháy sáng khi được cọ xát với mặt đất. Nó không thể cháy trong khoảng trống rỗng. Trong khoảng trống rỗng nó sẽ tắt” — Paustovsky,
+  Cái phong phú đa dạng vô cùng vô tận của văn học nghệ thuật là ở chỗ: mỗi tác phẩm mở ra một thế giới mới lạ, không lặp lại, góp phần phản ánh thể hiện cái muôn màu muôn vẻ của đời sống và của tâm hồn con người” — Lê Đình Kỵ,
+  Nghệ thuật là sự vươn tới, sự hướng về, sự níu giữ mãi mãi tính người cho con người”. — Nguyên Ngọc,
+  Loại văn chương tột bậc của thiên hạ không ở trong cái giới hạn đóng mở kết cấu” — Nhữ Bá Sỹ,
+  Văn học không quan tâm đến câu trả lời do nhà văn đem lại, mà quan tâm đến những câu hỏi do nhà văn đặt ra và những câu hỏi này luôn rộng hơn bất kì câu trả lời cặn kẽ nào” — Claudio Magris,
+  Nhiệm vụ của nhà văn phải là bộ dây thần kinh để cảm ứng, phải là tay chân để cung thủ. Muốn sáng tác những tác phẩm vĩ đại cho nền văn hoá tương lai, cố nhiên rất tốt, nhưng nhà văn đầu tranh cho hiện tại, đồng thời cũng đấu tranh cho tương lai nữa, bởi vì mất hiện tại làm gì có tương lai” — Lỗ Tấn,
+  Nhà thơ, đối với vũ trụ nhân sinh, nên bước vào bên trong mà lại nên đi ra bên ngoài. Bước vào bên trong mới có thể viết được. Đi ra bên ngoài mới có thể quan sát được. Bước vào bên trong mới có sinh khí. Đi ra bên ngoài mới đạt cao siêu” — Vương Quốc Duy đời Thanh,
+  Ngôn ngữ của thi ca khác với ngôn ngữ của đời sống ở chỗ là nó gợi ra được những liên tưởng phong phú, khơi dậy ở tâm hồn con người những rung động sâu xa, biến những tầm thường của đời sống thành những gì lãng mạn, cao cả” — Lâm Ngữ Đường,
+  Đời sống xanh tươi là cội nguồn sâu xa của văn học” — Goethe,
+  Chỉ có cuộc đời rộng rãi, chỉ có trường đời vô thường định mới dạy cho người ta biết được những câu đẹp đẽ” — Nguyễn Tuân,
+  Mỗi bài thơ mà hôm nay tôi trao vào tay bạn đọc thân mến là nảy sinh cùng với mầm mống trên cái cây xao động của cuộc đời đang nở hoa. Coi thường quyển sách này sẽ là tàn nhẫn bởi vì nó gắn liền khăng khít với bản thân cuộc đời tôi.” — Lorca,
+  Ý nghĩa trong thơ tôi là do bạn đọc cho nó” — P. Valery,
+  Đọc một câu thơ hay, ta thường có cảm giác đứng trước một bến đò gió nổi, một khao khát sang sông, một thúc đẩy lên đường hướng đến những vùng trời đẹp hơn, nhân tính hơn…” — Lê Đạt,
+  Một câu thơ hay là một câu thơ có sức gợi” — Lưu Trọng Lư,
+  Trong đời sống văn học, những nhà văn có tài năng, người thì đóng góp vào 1 cách viết, người thì đóng góp vào cách sử dụng ngôn ngữ, có người lại chỉ cho ta thấy những thứ rất nhỏ bé, đặc sắc mà giàu giá trị. Nhưng trên tất cả, anh ta phải cho người đọc thấy được tiếng nói riêng của anh ta trong 1 vấn đề mà nhiều người đang quan tâm đến.” — Nguyễn Minh Châu,
+  Nhà văn không có phép thần thông để vượt ra ngoài thế giới này, nhưng thế giới này trong con mắt nhà văn phải có một hình sắc riêng” — Hoài Thanh,
+  Tác phẩm văn học như con quay kì lạ, chỉ có thể xuất hiện trong vận động. Muốn làm cho nó xuất hiện, cần phải có một hoạt động cụ thể là sự đọc. Và tác phẩm văn học chỉ kéo dài chừng nào sự đọc còn có thể tiếp tục. Ngoài sự đọc ra, nó chỉ còn là những vệt đen trên giấy trắng” — J. Paul Sartre,
+  Nhà văn tồn tại ở trên đời trước hết để làm công việc giống như kẻ nâng giấc cho những người cùng đường tuyệt lộ bị cái ác hoặc số phận đen đủi dồn đến chân tường; để bênh vực cho những người không còn ai bênh vực” — Nguyễn Minh Châu,
+  Thơ không cần nhiều từ ngữ. Nó cũng không quan tâm đến hình xác của sự sống. Nó chỉ cần cảm nhận và truyền đi 1 chút linh hồn của cảnh vật thông qua linh hồn thi sĩ” — Nguyễn Đăng Mạnh,
+  Thơ là tiếng nói hồn nhiên nhất của tâm hồn con người trước cuộc đời” — Tố Hữu,
+  Cái bóng của độc giả luôn luôn cúi xuống sau lưng nhà văn, ngay khi mà nhà văn ngồi trước trang giấy trắng.” — Aimatov,
+  Bài thơ là sợi dậy truyền tình cảm cho người đọc” — Nguyễn Đình Thi,
+  Cuộc sống là cánh đồng màu mở để cho thơ bén rễ sinh sôi” — Puskin,
+  Câu thơ phải luôn bất ổn và xôn xao – Không thể nằm yên mà ngủ được nào” — Chế Lan Viên,
+  Sáng tác thơ là một việc do cá nhân thi sĩ làm, một thứ sản xuất đặc biệt và cá thể” — Xuân Diệu,
+  Khi tác phẩm kết thúc, ấy là sự sống của nó mới thực sự bắt đầu” — Aimatov,
+  Đụng chạm với cuộc sống hằng ngày tâm trạng nảy lên bao nhiêu hình ảnh như lúc búa đập vào sắt trên đe. Người làm thơ lượm lặt những tia sáng ấy, kết thành một bó sáng. Đó là hình ảnh thơ” — Nguyễn Đình Thi,
+  Nhà văn là người đi tìm, gắng đi tìm những hạt ngọc ẩn giấu trong bề sâu tâm hồn con người” — Nguyễn Minh Châu,
+  Ý hết mà lời dừng, ấy là lời rất mừng trong thiên hạ. Nhưng lời dừng mà ý chưa hết lại càng hay tuyệt” — Lê Quý Đôn,
+  Tác phẩm văn học là đơn vị sáng tác của nhà văn, là đối tượng thưởng thức của người đọc, là kết quả của trình độ ý thức xã hội, ý thức thẩm mĩ thời đại, là chỉnh thể trung tâm của hoạt động văn học” — Lê Lưu Oanh,
+  Chủ đề là một ý tưởng nảy mầm trong vốn kinh nghiệm của tác giả, do cuộc sống mách bảo cho tác giả, nhưng vẫn còn ẩn náu trong cái vốn ấn tượng của anh ta dưới một dạng thức chưa hình thành và đòi hỏi phải được thể hiện trong những hình tượng, thúc đẩy tác giả tìm cách hình tượng hóa nó” — M. Gorky,
+  Nhà thơ gói tâm tình mình vào trong thơ. Người đọc mở ra bỗng thấy tâm tình của chính mình” — Lưu Quý Kỳ,
+  Tôi thấy văn chương của mình (và cả bản thân mình) sao giống trái sầu riêng quá trời, có người thích, khen thơm, có người bưng mũi quay đi vì chê nó nặng mùi. Nhưng khi bắt đầu kết trái, sầu riêng đâu định trước sẽ dâng tặng cho riêng ai, nên chẳng bẻ mình bẻ mẩy để lấy lòng người…” — Nguyễn Ngọc Tư,
+  Người vẫn còn mang vết thương đã toan đi chữa vết thương cho người khác. Tôi nghĩ nghề viết và người viết cũng đơn giản vậy, chữa lành, an ủi những vết thương của người đời để làm dịu vết thương của chính mình” — Nguyễn Ngọc Tư,
+  Tình yêu này của người nghệ sĩ vừa là một niềm hân hoan say mê, vừa là một nỗi đau đớn, khắc khoải, một mối quan hoài thường trực về số phận, hạnh phúc của những người chung quanh mình” — Nguyễn Minh Châu,
+  “Thơ là mở ra được một cái gì mà trước câu thơ đó, trước nhà thơ đó, vẫn như là bị phong kín” — Nguyễn Tuân,
+  Thơ ca, nếu không có người tôi đã mồ côi” — Rasul Gamzatov,
+  Mỗi người viết văn chỉ có khả năng thành công qua những cái mình thông thuộc” — Tô Hoài,
+  Làm thơ có lúc như lấy người điếc lác ù tai làm bạn tri âm,
    Cứ phải hét vào tai những tiếng nói thầm.
    Làm thơ có lúc là thi sĩ câm
     Ra hiệu bằng tay, bằng mắt, bằng toàn thân,
-    Đóng kịch để nói điều rất thật” — (Tri âm – Chế Lan Viên)`,
-  `Ôi! chỉ cần một độc giả dù vô tâm đến mấy
+    Đóng kịch để nói điều rất thật” — (Tri âm – Chế Lan Viên),
+  Ôi! chỉ cần một độc giả dù vô tâm đến mấy
    Là cũng đủ cho nhà thơ thoát khỏi vạc dầu
-   Và bay lên chín tầng cao”.`,
-  `Nghệ thuật là những câu trả lời đầy thẩm mĩ cho con người, thay đổi, cải thiện thế giới tinh thần cho con người, nâng con người lên” — Tố Hữu`,
-  `Thơ là sự thể hiện con người và thời đại một cách cao đẹp.” — Sóng Hồng`,
-  `Thơ là âm nhạc của tâm hồn, nhất là những tâm hồn cao cả, đa cảm”. — Voltaire`,
-  `Chi tiết làm nên bụi vàng của tác phẩm. — Pauxtopxki`,
-  `Con người đến với cuộc sống từ nhiều nẻo đường, trên muôn vàn cung bậc phong phú nhưng tiêu điểm mà con người hướng đến vẫn là con người” — Đặng Thai Mai`,
-  `Văn chương có loại đáng thờ và không đáng thờ. Loại không đáng thờ là loại chuyên chú ở văn chương. Loại đáng thờ là loại chuyên chú ở con người” — Nguyễn Văn Siêu`,
-  `Sống đã rồi hãy viết, hãy hòa mình vào cuộc sống vĩ đại của nhân dân” — Nam Cao`,
-  `Văn chương giúp ta trải nghiệm cuộc sống ở những tầng mức và chiều sâu đáng kinh ngạc. Nó giúp cho con người sống người hơn, sống tốt hơn nếu ta biết tìm trong mỗi cuốn sách những vệt sáng, những nguồn sáng soi rọi vào những góc khuất của con người và cuộc đời” — Thanh Thảo`,
-  `Hãy biết rằng chính trái tim bạn đang lên tiếng và rên rỉ khi tay bạn viết.” — Alfret de Musse`,
-  `Bài thơ hay là một sinh vật có thân xác. Mỗi câu, mỗi từ đều có lý do. Kỹ thuật làm thơ cũng nghiêm túc như người lính trong quân đội. Đổi một câu, một chữ là sai ở trọng tâm bài thơ, bài thơ sai lệch, sa ngã” — Xuân Diệu`,
-  `Chỉ cần một số ít trang văn xuôi mà họ (các bậc thầy về truyện ngắn) có thể làm nổ tung trong tình cảm và ý nghĩ người đọc những điều rất sâu xa và da diết của con người, khiến người đọc phải nhớ mãi, suy nghĩ mãi, đọc đi đọc lại vẫn không thấy chán”. — Nguyễn Minh Châu`,
+   Và bay lên chín tầng cao”.,
+  Nghệ thuật là những câu trả lời đầy thẩm mĩ cho con người, thay đổi, cải thiện thế giới tinh thần cho con người, nâng con người lên” — Tố Hữu,
+  Thơ là sự thể hiện con người và thời đại một cách cao đẹp.” — Sóng Hồng,
+  Thơ là âm nhạc của tâm hồn, nhất là những tâm hồn cao cả, đa cảm”. — Voltaire,
+  Chi tiết làm nên bụi vàng của tác phẩm. — Pauxtopxki,
+  Con người đến với cuộc sống từ nhiều nẻo đường, trên muôn vàn cung bậc phong phú nhưng tiêu điểm mà con người hướng đến vẫn là con người” — Đặng Thai Mai,
+  Văn chương có loại đáng thờ và không đáng thờ. Loại không đáng thờ là loại chuyên chú ở văn chương. Loại đáng thờ là loại chuyên chú ở con người” — Nguyễn Văn Siêu,
+  Sống đã rồi hãy viết, hãy hòa mình vào cuộc sống vĩ đại của nhân dân” — Nam Cao,
+  Văn chương giúp ta trải nghiệm cuộc sống ở những tầng mức và chiều sâu đáng kinh ngạc. Nó giúp cho con người sống người hơn, sống tốt hơn nếu ta biết tìm trong mỗi cuốn sách những vệt sáng, những nguồn sáng soi rọi vào những góc khuất của con người và cuộc đời” — Thanh Thảo,
+  Hãy biết rằng chính trái tim bạn đang lên tiếng và rên rỉ khi tay bạn viết.” — Alfret de Musse,
+  Bài thơ hay là một sinh vật có thân xác. Mỗi câu, mỗi từ đều có lý do. Kỹ thuật làm thơ cũng nghiêm túc như người lính trong quân đội. Đổi một câu, một chữ là sai ở trọng tâm bài thơ, bài thơ sai lệch, sa ngã” — Xuân Diệu,
+  Chỉ cần một số ít trang văn xuôi mà họ (các bậc thầy về truyện ngắn) có thể làm nổ tung trong tình cảm và ý nghĩ người đọc những điều rất sâu xa và da diết của con người, khiến người đọc phải nhớ mãi, suy nghĩ mãi, đọc đi đọc lại vẫn không thấy chán”. — Nguyễn Minh Châu,
 
   /* ===================== NLXH ===================== */
 
-  `Trái tim của một con người xuất chúng bắt đầu đập khi khám phá ra một thứ để theo đuổi – một thứ hấp dẫn bạn, giải phóng bạn, thách thức bạn, hoặc mang đến cho bạn cảm giác ý nghĩa, hạnh phúc hay đam mê. — Terry Orlick`,
-  `Hãy học khi người khác ngủ; lao động khi người khác lười nhác; chuẩn bị khi người khác chơi bời; và giấc mơ khi người khác cầu ao ước. — William Arthur Ward`,
-  `Một ngày nào đó bạn sẽ nhận ra ý nghĩa của ước mơ không phải ở chỗ nó có phù hợp với khả năng thực tế hay không. Điều quan trọng là nó cho phép bạn sống thêm một cuộc đời nữa với cảm xúc của riêng bạn, trong một thế giới mà bạn có thể hóa thân một cách hồn nhiên nhất và đáng trân trọng. — Nguyễn Nhật Ánh`,
-  `Khi bạn khao khát một điều gì đó, cả vũ trụ sẽ hợp lực giúp bạn đạt điều đó. — Paulo Coelho (Nhà giả kim)`,
-  `Hai mươi năm sau bạn sẽ hối tiếc về những gì đã không làm hơn là những gì đã làm. Vậy hãy quăng dây neo đi. Dong buồm xa khỏi bến đỗ an toàn. Xuôi theo chiều gió. Thám hiểm, ước mơ và khám phá. — Robin Sharma (Đôi ngàn dặm)`,
-  `Nếu đam mê cho bạn đi, hãy để lý trí nắm dây cương. — Benjamin Franklin`,
-  `Không có con đường nào dẫn đến hạnh phúc, hạnh phúc là một con đường. — Thích Nhất Hạnh`,
-  `Vận mệnh của chúng ta sống trong chính bản thân ta. Bạn chỉ cần đủ can đảm để nhìn thấy nó. — Walt Disney`,
-  `Khi bạn đánh giá thấp điều mình làm, thế giới sẽ đánh giá thấp con người bạn. — Oprah Winfrey`,
-  `Có một câu hỏi đôi khi khiến tôi thấy mơ hồ: Tôi điên hay người khác điên? — Albert Einstein`,
-  `Có một điều mà chúng ta có thể làm được tốt hơn bất cứ ai khác: chúng ta có thể là chính mình. — William Arthur Ward`,
-  `Một người đã đánh mất niềm tin vào bản thân thì chắc chắn sẽ còn đánh mất thêm nhiều thứ quý giá khác nữa. — Khuyết danh`,
-  `Cuộc sống không phải là đi tìm bản thân mình. Cuộc sống là tạo ra bản thân mình. — George Bernard Shaw`,
-  `Dấu chân sẽ không bao giờ xuất hiện nếu bạn chỉ đi trên đầu ngón chân của mình. — Khuyết danh`,
-  `Cuộc đời tôi không làm tôi hài lòng, vậy nên tôi tạo ra cuộc đời tôi. — Coco Chanel`,
-  `Cũng như một bước chân đơn độc không thể tạo nên đường mòn trên mặt đất, một ý nghĩ đơn độc không thể tạo nên con đường của tư duy. Để xây dựng con đường hằn sâu xuống đất, chúng ta phải qua lại rất nhiều. Để xây dựng con đường hằn sâu trong trí óc, chúng ta phải nghĩ đi nghĩ lại loại ý nghĩ chúng ta muốn chi phối cuộc đời mình. — David Henry Thoreau`,
-  `Càng hiểu biết, con người càng tự do. — Voltaire`,
-  `Nếu tôi nhìn được xa hơn người khác, đó là nhờ đứng trên vai những người khổng lồ. — Isaac Newton`,
-  `Tôi là người thông thái nhất trên đời, vì tôi biết một điều, rằng tôi chẳng biết gì cả. — Plato`,
-  `Chúng ta sẽ trở thành điều mà chúng ta hay nghĩ đến nhất. Cuộc cách mạng của thời đại này là khám phá ra rằng, nhờ thay đổi thái độ từ trong chính nội tâm mà con người có thể thay đổi được cả thế giới bên ngoài. — William James`,
-  `Nếu bạn chỉ đọc những quyển sách mà mọi người đang đọc thì bạn cũng chỉ nghĩ những gì mọi người đang nghĩ mà thôi. — Haruki Murakami`,
-  `Định nghĩa có nghĩa là giới hạn. — Oscar Wilde`,
-  `Tất cả con người đều được sinh ra với tiềm năng sáng tạo như nhau. Hầu hết con người lãng phí tiềm năng của mình cho cả triệu thứ thừa thãi. Tôi dùng tiềm năng của tôi cho một thứ và chỉ một thứ duy nhất: nghệ thuật của tôi. — Pablo Picasso`,
+  Trái tim của một con người xuất chúng bắt đầu đập khi khám phá ra một thứ để theo đuổi – một thứ hấp dẫn bạn, giải phóng bạn, thách thức bạn, hoặc mang đến cho bạn cảm giác ý nghĩa, hạnh phúc hay đam mê. — Terry Orlick,
+  Hãy học khi người khác ngủ; lao động khi người khác lười nhác; chuẩn bị khi người khác chơi bời; và giấc mơ khi người khác cầu ao ước. — William Arthur Ward,
+  Một ngày nào đó bạn sẽ nhận ra ý nghĩa của ước mơ không phải ở chỗ nó có phù hợp với khả năng thực tế hay không. Điều quan trọng là nó cho phép bạn sống thêm một cuộc đời nữa với cảm xúc của riêng bạn, trong một thế giới mà bạn có thể hóa thân một cách hồn nhiên nhất và đáng trân trọng. — Nguyễn Nhật Ánh,
+  Khi bạn khao khát một điều gì đó, cả vũ trụ sẽ hợp lực giúp bạn đạt điều đó. — Paulo Coelho (Nhà giả kim),
+  Hai mươi năm sau bạn sẽ hối tiếc về những gì đã không làm hơn là những gì đã làm. Vậy hãy quăng dây neo đi. Dong buồm xa khỏi bến đỗ an toàn. Xuôi theo chiều gió. Thám hiểm, ước mơ và khám phá. — Robin Sharma (Đôi ngàn dặm),
+  Nếu đam mê cho bạn đi, hãy để lý trí nắm dây cương. — Benjamin Franklin,
+  Không có con đường nào dẫn đến hạnh phúc, hạnh phúc là một con đường. — Thích Nhất Hạnh,
+  Vận mệnh của chúng ta sống trong chính bản thân ta. Bạn chỉ cần đủ can đảm để nhìn thấy nó. — Walt Disney,
+  Khi bạn đánh giá thấp điều mình làm, thế giới sẽ đánh giá thấp con người bạn. — Oprah Winfrey,
+  Có một câu hỏi đôi khi khiến tôi thấy mơ hồ: Tôi điên hay người khác điên? — Albert Einstein,
+  Có một điều mà chúng ta có thể làm được tốt hơn bất cứ ai khác: chúng ta có thể là chính mình. — William Arthur Ward,
+  Một người đã đánh mất niềm tin vào bản thân thì chắc chắn sẽ còn đánh mất thêm nhiều thứ quý giá khác nữa. — Khuyết danh,
+  Cuộc sống không phải là đi tìm bản thân mình. Cuộc sống là tạo ra bản thân mình. — George Bernard Shaw,
+  Dấu chân sẽ không bao giờ xuất hiện nếu bạn chỉ đi trên đầu ngón chân của mình. — Khuyết danh,
+  Cuộc đời tôi không làm tôi hài lòng, vậy nên tôi tạo ra cuộc đời tôi. — Coco Chanel,
+  Cũng như một bước chân đơn độc không thể tạo nên đường mòn trên mặt đất, một ý nghĩ đơn độc không thể tạo nên con đường của tư duy. Để xây dựng con đường hằn sâu xuống đất, chúng ta phải qua lại rất nhiều. Để xây dựng con đường hằn sâu trong trí óc, chúng ta phải nghĩ đi nghĩ lại loại ý nghĩ chúng ta muốn chi phối cuộc đời mình. — David Henry Thoreau,
+  Càng hiểu biết, con người càng tự do. — Voltaire,
+  Nếu tôi nhìn được xa hơn người khác, đó là nhờ đứng trên vai những người khổng lồ. — Isaac Newton,
+  Tôi là người thông thái nhất trên đời, vì tôi biết một điều, rằng tôi chẳng biết gì cả. — Plato,
+  Chúng ta sẽ trở thành điều mà chúng ta hay nghĩ đến nhất. Cuộc cách mạng của thời đại này là khám phá ra rằng, nhờ thay đổi thái độ từ trong chính nội tâm mà con người có thể thay đổi được cả thế giới bên ngoài. — William James,
+  Nếu bạn chỉ đọc những quyển sách mà mọi người đang đọc thì bạn cũng chỉ nghĩ những gì mọi người đang nghĩ mà thôi. — Haruki Murakami,
+  Định nghĩa có nghĩa là giới hạn. — Oscar Wilde,
+  Tất cả con người đều được sinh ra với tiềm năng sáng tạo như nhau. Hầu hết con người lãng phí tiềm năng của mình cho cả triệu thứ thừa thãi. Tôi dùng tiềm năng của tôi cho một thứ và chỉ một thứ duy nhất: nghệ thuật của tôi. — Pablo Picasso,
 
   /* ===== Thái độ sống (61–69) ===== */
 
-  `Không phải ai cũng có thể làm những điều vĩ đại. Nhưng chúng ta có thể làm những điều nhỏ nhặt với tình yêu vĩ đại.`,
-  `Bàn tay tặng hoa hồng bao giờ cũng phảng phất hương thơm.`,
-  `Chúng ta sống trong những việc chúng ta đã làm, không phải trong năm tháng; trong hành động, không phải trong hơi thở; trong cảm xúc, không phải trong những con số trên mặt đồng hồ. Chúng ta đếm thời gian bằng những nhịp tim. Người sống nhiều nhất là người tư duy nhiều nhất, cảm nhận cao thượng nhất và hành động tốt đẹp nhất.`,
-  `Đừng thở dài hãy vươn vai mà sống. Bùn dưới chân nhưng nắng ở trên đầu.`,
-  `Sống như chính mình trong một thế giới luôn cố biến mình thành người khác – đó là thành tựu lớn nhất trong cuộc đời mỗi người. — Ralph Waldo Emerson`,
-  `Kẻ mạnh không phải là kẻ giẫm lên người khác để thỏa mãn lòng ích kỉ. Kẻ mạnh chính là kẻ giúp đỡ người khác trên đôi vai của mình. — Nam Cao`,
-  `Cuộc đời cũng như hơi thở vậy thôi. Ta không thể hít một hơi dài quá khả năng của mình. Nhưng ta có thể hít sâu hết khả năng của mình trong từng hơi thở. Nếu đã biết trăm năm là hữu hạn, có gì ta không sống thật sâu? — Phạm Lữ Ân`,
-  `Hãy nhớ rằng trước khi được thế giới này phát hiện ra, những viên đá quý đã phải vùi trong cát bụi và chịu đựng nỗi cô đơn cả ngàn năm. — Tất Thúy Minh — Bỉ Shumin`,
+  Không phải ai cũng có thể làm những điều vĩ đại. Nhưng chúng ta có thể làm những điều nhỏ nhặt với tình yêu vĩ đại.,
+  Bàn tay tặng hoa hồng bao giờ cũng phảng phất hương thơm.,
+  Chúng ta sống trong những việc chúng ta đã làm, không phải trong năm tháng; trong hành động, không phải trong hơi thở; trong cảm xúc, không phải trong những con số trên mặt đồng hồ. Chúng ta đếm thời gian bằng những nhịp tim. Người sống nhiều nhất là người tư duy nhiều nhất, cảm nhận cao thượng nhất và hành động tốt đẹp nhất.,
+  Đừng thở dài hãy vươn vai mà sống.
+Bùn dưới chân nhưng nắng ở trên đầu.,
+  Sống như chính mình trong một thế giới luôn cố biến mình thành người khác – đó là thành tựu lớn nhất trong cuộc đời mỗi người. — Ralph Waldo Emerson,
+  Kẻ mạnh không phải là kẻ giẫm lên người khác để thỏa mãn lòng ích kỉ. Kẻ mạnh chính là kẻ giúp đỡ người khác trên đôi vai của mình. — Nam Cao,
+  Cuộc đời cũng như hơi thở vậy thôi. Ta không thể hít một hơi dài quá khả năng của mình. Nhưng ta có thể hít sâu hết khả năng của mình trong từng hơi thở. Nếu đã biết trăm năm là hữu hạn, có gì ta không sống thật sâu? — Phạm Lữ Ân,
+  Hãy nhớ rằng trước khi được thế giới này phát hiện ra, những viên đá quý đã phải vùi trong cát bụi và chịu đựng nỗi cô đơn cả ngàn năm. — Tất Thúy Minh — Bỉ Shumin  
+
 ];
 
-  
 /* ===================== ELEMENTS ===================== */
-const boardEl=document.getElementById("board");
-const messageEl=document.getElementById("message");
 const quoteEl=document.getElementById("quote");
 const inputEl=document.getElementById("input");
 const timeEl=document.getElementById("time");
 const wpmEl=document.getElementById("wpm");
 const scoreEl=document.getElementById("score");
+const timeSelect=document.getElementById("timeSelect");
+const boardEl=document.getElementById("board");
 
 let currentQuote="";
-let timeLeft = 600;
+let timeLeft=parseInt(timeSelect.value);
 let timer=null;
 let totalTyped=0;
 let score=0;
@@ -431,53 +355,42 @@ function normalizeText(text){
     .replace(/\s+/g," ")
     .trim();
 }
-// ------------------- RANDOM QUOTE -------------------
 
+/* ===================== RANDOM QUOTE ===================== */
 function randomQuote(){
+  let randomIndex;
+  do{
+    randomIndex=Math.floor(Math.random()*quotes.length);
+  }while(randomIndex===lastIndex);
 
-  // Lấy 5 câu random
-  let fiveQuotes = getRandomFive(quotes);
+  lastIndex=randomIndex;
+  currentQuote=quotes[randomIndex];
 
-  // Chọn 1 câu trong 5 câu đó
-  let randomIndex = Math.floor(Math.random() * fiveQuotes.length);
-
-  currentQuote = fiveQuotes[randomIndex];
-
-  quoteEl.innerHTML = currentQuote
+  quoteEl.innerHTML=currentQuote
     .split("")
-    .map(char => `<span>${char}</span>`)
+    .map(char=><span>${char}</span>)
     .join("");
 
-  inputEl.value = "";
+  inputEl.value="";
 }
+
 /* ===================== GAME ===================== */
-function formatTime(seconds){
-  let minutes = Math.floor(seconds / 60);
-  let secs = seconds % 60;
-  return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
-}
 function startGame(){
   if(started) return;
   started=true;
 
-  timeLeft = 600; // 10 phút mặc định
-  timeEl.textContent = formatTime(timeLeft);
+  timeLeft=parseInt(timeSelect.value);
+  timeEl.textContent=timeLeft;
 
   timer=setInterval(()=>{
     timeLeft--;
-    timeEl.textContent=formatTime(timeLeft);
+    timeEl.textContent=timeLeft;
     calculateWPM();
 
     if(timeLeft<=0){
       clearInterval(timer);
       saveScore();
-      const messages = [
-  "Cảm ơn bạn vì đã kiên nhẫn luyện tập" , 
-  "Chúc mừng!Bạn đã kiên trì nhiều rồi" 
-];
-
-let randomMsg = messages[Math.floor(Math.random()*messages.length)];
-messageEl.textContent = randomMsg;
+      alert("⏳ Hết giờ!\nScore: "+score+"\nWPM: "+wpmEl.textContent);
       resetGame();
     }
   },1000);
@@ -525,7 +438,7 @@ inputEl.addEventListener("input",()=>{
     }
   });
 
-totalTyped = normalizedInput.length;
+  totalTyped++;
 
   if(normalizedInput===normalizedQuote){
     score++;
@@ -541,7 +454,7 @@ totalTyped = normalizedInput.length;
 
 /* ===================== WPM ===================== */
 function calculateWPM(){
- let minutes=(600-timeLeft)/60;
+  let minutes=(parseInt(timeSelect.value)-timeLeft)/60;
   if(minutes>0){
     let wpm=Math.round((totalTyped/5)/minutes);
     wpmEl.textContent=wpm;
@@ -560,17 +473,17 @@ function saveScore(){
 
 function renderBoard(){
   let scores=JSON.parse(localStorage.getItem("mintScores"))||[];
-  boardEl.innerHTML=scores.map(s=>`<li>${s} câu</li>`).join("");
+  boardEl.innerHTML=scores.map(s=><li>${s} câu</li>).join("");
 }
 
 /* ===================== HEART EFFECT ===================== */
 function showHearts(){
-  for(let i=0;i<5;i++){
+  for(let i=0;i<2;i++){
     const heart=document.createElement("div");
     heart.classList.add("heart");
     heart.innerText="💚";
     heart.style.left=Math.random()*window.innerWidth+"px";
-    heart.style.top=window.innerHeight/5+"px";
+    heart.style.top=window.innerHeight/2+"px";
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),2000);
   }
@@ -581,18 +494,17 @@ function toggleDark(){
   document.body.classList.toggle("dark");
 }
 
+timeSelect.addEventListener("change",()=>{
+  timeLeft=parseInt(timeSelect.value);
+  timeEl.textContent=timeLeft;
+});
+
 renderBoard();
 randomQuote();
 </script>
 
 </body>
-
 </html>
 
 
-
-
-
-
-
-
+Mình nhận xét kỹ cho bạn như một dev khó tính nhé:
