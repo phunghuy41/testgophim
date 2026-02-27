@@ -129,6 +129,28 @@ button,select{
     width:86%;
   }
 }
+  /* ================= MOBILE FIX ================= */
+@media (max-width: 768px){
+
+  body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+  }
+
+  .container{
+    width:95%;
+    max-width:500px;
+    margin:0 auto;
+  }
+
+  #quote{
+    font-size:16px;
+    line-height:1.6;
+  }
+
+}
   #message{
   margin-top:10px;
   font-style:italic;
@@ -169,6 +191,72 @@ button,select{
 /* ===================== QUOTES ===================== */
 /* DÁN TOÀN BỘ MẢNG QUOTES CỦA BẠN VÀO ĐÂY */
 const quotes = [
+'"Nơi nào có tình yêu thương, nơi đó có sự sống." - Mahatma Gandhi',
+'"Chúng ta chỉ thực sự sống khi biết sống vì người khác." - Albert Einstein',
+'"Sự tử tế dù nhỏ bé cũng không bao giờ là vô ích." - Aesop',
+'"Không ai có thể làm bạn cảm thấy thấp kém nếu không có sự đồng ý của bạn." - Eleanor Roosevelt',
+'"Thành công không phải là chìa khóa của hạnh phúc. Hạnh phúc mới là chìa khóa của thành công." - Albert Schweitzer',
+'"Nghị lực và bền bỉ có thể chinh phục mọi thứ." - Benjamin Franklin',
+'"Tôi không thất bại. Tôi chỉ tìm ra 10.000 cách không hoạt động." - Thomas Edison',
+'"Điều không giết được ta sẽ khiến ta mạnh mẽ hơn." - Friedrich Nietzsche',
+'"Cuộc sống giống như đi xe đạp. Để giữ thăng bằng, bạn phải tiếp tục di chuyển." - Albert Einstein',
+'"Tương lai thuộc về những ai tin vào vẻ đẹp của ước mơ." - Eleanor Roosevelt',
+'"Hãy sống như thể bạn sẽ chết vào ngày mai. Hãy học như thể bạn sẽ sống mãi mãi." - Mahatma Gandhi',
+'"Giá trị của con người không nằm ở những gì họ có, mà ở những gì họ cho đi." - Albert Schweitzer',
+'"Đừng hỏi Tổ quốc đã làm gì cho ta, mà hãy hỏi ta đã làm gì cho Tổ quốc." - John F. Kennedy',
+'"Giáo dục là vũ khí mạnh nhất để thay đổi thế giới." - Nelson Mandela',
+'"Cách tốt nhất để tìm thấy chính mình là cống hiến vì người khác." - Mahatma Gandhi',
+'"Nghệ thuật là lĩnh vực của cái độc đáo." - Nguyễn Đình Thi',
+'"Nhà văn là người thư kí trung thành của thời đại." - Honoré de Balzac',
+'"Một tác phẩm thật giá trị phải vượt lên trên mọi bờ cõi và giới hạn." - Lev Tolstoy',
+'"Chi tiết nhỏ làm nên nhà văn lớn." - Gustave Flaubert',
+'"Thơ là tiếng nói đầu tiên, tiếng nói thứ nhất của tâm hồn khi đụng chạm tới cuộc sống." - Nguyễn Đình Thi',
+'"Thơ ca là tiếng nói của trái tim." - Xuân Diệu',
+'"Văn chương gây cho ta những tình cảm ta không có, luyện những tình cảm ta sẵn có." - Hoài Thanh',
+'"Nhà văn tồn tại ở trên đời trước hết để làm công việc giống như kẻ nâng giấc cho những con người bị cùng đường, tuyệt lộ." - Nguyễn Minh Châu',
+'"Tác phẩm nghệ thuật chân chính bao giờ cũng là sự tôn vinh con người." - Mikhail Sholokhov',
+'"Văn chương không phải là sự tô hồng hiện thực mà là sự khám phá và sáng tạo hiện thực." - Nam Cao',
+'"Nghệ thuật không cần phải là ánh trăng lừa dối; nghệ thuật có thể chỉ là tiếng đau khổ kia thoát ra từ những kiếp sống lầm than." - Nam Cao',
+'"Một tác phẩm nghệ thuật phải là kết quả của tình yêu." - Lev Tolstoy',
+'"Tác phẩm nghệ thuật sẽ chết nếu nó miêu tả cuộc sống chỉ để miêu tả." - Vissarion Belinsky',
+'"Văn học phản ánh hiện thực nhưng không sao chép hiện thực." - Sóng Hồng',
+'"Thơ trước hết là cuộc đời, sau đó mới là nghệ thuật." - Tố Hữu'
+'"Mỗi nhà văn chân chính đều là một nhà nhân đạo từ trong cốt tủy." - Sê-khốp',
+'"Văn học phản ánh hiện thực nhưng không sao chép hiện thực." - Lỗ Tấn',
+'"Nhà văn là người thư ký trung thành của thời đại." - Balzac',
+'"Thơ ca là tiếng nói đầu tiên của tâm hồn khi chạm vào cuộc sống." - Tố Hữu',
+'"Tác phẩm lớn luôn đặt ra nhiều câu hỏi hơn là trả lời." - Umberto Eco',
+'"Nghệ thuật vị nhân sinh." - Tuyên ngôn văn học hiện thực',
+'"Văn chương trước hết phải là văn chương." - Thạch Lam',
+'"Nhà văn tồn tại để bênh vực con người." - Nguyễn Minh Châu',
+'"Sứ mệnh của văn học là làm cho con người trở nên tốt đẹp hơn." - Lev Tolstoy',
+'"Một tác phẩm không có tư tưởng cũng như một cơ thể không có linh hồn." - Victor Hugo',
+'"Giá trị của văn học nằm ở sức ám ảnh lâu dài." - Milan Kundera',
+'"Văn học chân chính không bao giờ phản bội con người." - Nguyên Ngọc',
+'"Cái đẹp cứu rỗi thế giới." - Fyodor Dostoevsky',
+'"Ngôn ngữ là vỏ của tư tưởng." - Antoine de Rivarol',
+'"Văn chương là tấm gương phản chiếu xã hội." - Stendhal',
+
+'"Sống là cho đâu chỉ nhận riêng mình." - Tố Hữu',
+'"Không có áp lực, không có kim cương." - Thomas Carlyle',
+'"Hãy sống như thể bạn sẽ chết vào ngày mai." - Mahatma Gandhi',
+'"Lòng tốt là ngôn ngữ mà người điếc có thể nghe và người mù có thể thấy." - Mark Twain',
+'"Đừng chờ cơ hội, hãy tạo ra nó." - George Bernard Shaw',
+'"Tương lai phụ thuộc vào những gì bạn làm hôm nay." - Mahatma Gandhi',
+'"Giá trị của bản thân nằm ở sự nỗ lực không ngừng." - Khuyết danh',
+'"Thành công không phải là đích đến, mà là hành trình." - Arthur Ashe',
+'"Chúng ta không thể thay đổi hướng gió, nhưng có thể điều chỉnh cánh buồm." - Aristotle',
+'"Hạnh phúc không phải là có tất cả, mà là biết trân trọng những gì mình có." - Khuyết danh',
+'"Điều quan trọng không phải là bạn đứng ở đâu, mà là bạn đang hướng về đâu." - Oliver Wendell Holmes',
+'"Muốn đi nhanh hãy đi một mình, muốn đi xa hãy đi cùng nhau." - Tục ngữ châu Phi',
+'"Kỷ luật là cầu nối giữa mục tiêu và thành tựu." - Jim Rohn',
+'"Bạn không cần phải vĩ đại để bắt đầu, nhưng phải bắt đầu để trở nên vĩ đại." - Zig Ziglar',
+'"Khó khăn không phải để đánh bại bạn, mà để làm bạn mạnh mẽ hơn." - Khuyết danh',
+'"Sự khác biệt giữa người thành công và kẻ thất bại là ở sự kiên trì." - Vince Lombardi',
+'"Thái độ quyết định độ cao của bạn." - Zig Ziglar',
+'"Đừng so sánh mình với người khác, hãy so sánh mình với phiên bản hôm qua." - Khuyết danh',
+'"Học vấn không phải là đích đến, mà là hành trình suốt đời." - Albert Einstein',
+'"Tự do lớn nhất là được là chính mình." - Jim Morrison'
  `Nhà văn tồn tại ở trên đời trước hết để làm công việc giống như kẻ nâng giấc cho những người cùng đường tuyệt lộ bị cái ác hoặc số phận đen đủi dồn đến chân tường; để bênh vực cho những con người không còn ai bênh vực và để cất lên tiếng nói cho những số phận bị lãng quên. — Nguyễn Minh Châu`,
 
 `Văn học và đời sống là hai vòng tròn đồng tâm mà tâm điểm là con người. Nhà văn nếu đánh mất con người thì cũng đồng thời đánh mất chính lý do tồn tại của văn chương. — Nguyễn Minh Châu`,
@@ -321,6 +409,8 @@ Bùn dưới chân nhưng nắng ở trên đầu.`,
 ];
 
 /* ===================== ELEMENTS ===================== */
+const boardEl=document.getElementById("board");
+const messageEl=document.getElementById("message");
 const quoteEl=document.getElementById("quote");
 const inputEl=document.getElementById("input");
 const timeEl=document.getElementById("time");
@@ -349,7 +439,7 @@ function normalizeText(text){
     .replace(/\s+/g," ")
     .trim();
 }
-  -------------------RANDOMQUOTE---------------------
+// ------------------- RANDOM QUOTE -------------------
 
 function randomQuote(){
 
@@ -506,6 +596,7 @@ randomQuote();
 </body>
 
 </html>
+
 
 
 
