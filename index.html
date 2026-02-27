@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Test Typing Pro</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Nunito:wght@700&display=swap" rel="stylesheet">
@@ -37,12 +38,9 @@ body.dark{
 }
 
 .game-container{
-  background:var(--card);
-  padding:30px;
-  border-radius:20px;
-  max-width:700px;
-  width:100%;
-  box-shadow:0 10px 30px rgba(0, 0, 0, 0.1);
+  width:95%;
+  max-width:500px;
+  margin:20px auto;
 }
 
 .stats{
@@ -120,6 +118,17 @@ button,select{
 @media(max-width:768px){
   .main-wrapper{
     padding:20px;
+  }
+}
+@media (max-width:600px){
+  .controls{
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .controls select,
+  .controls button{
+    width:100%;
   }
 }
 </style>
@@ -499,4 +508,5 @@ randomQuote();
 </script>
 
 </body>
+
 </html>
